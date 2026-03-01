@@ -1,0 +1,603 @@
+﻿#root {
+  height: 100vh;
+}
+
+.screen-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #cfcfcf;
+  padding: 20px 12px;
+}
+
+.mobile-page {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: min(800px, calc(100vh - 40px));
+  background: #f6f6f6;
+  border: 1px solid #d5d5d5;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-shell {
+  gap: 12px;
+}
+
+.shell-header h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #ff7f83;
+  font-weight: 800;
+}
+
+.shell-header p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  text-align: center;
+  color: #6d6d6d;
+}
+
+.top-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.top-nav-btn {
+  border: 1px solid #cdcdcd;
+  background: #fff;
+  color: #333;
+  border-radius: 10px;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.top-nav-btn.active {
+  border-color: #608ef2;
+  background: #608ef2;
+  color: #fff;
+}
+
+.page-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top-area {
+  position: relative;
+  padding-top: 4px;
+}
+
+.top-area h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 38px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #ff7f83;
+  font-weight: 800;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #555;
+  cursor: pointer;
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.top-area .icon-btn {
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+}
+
+.search-area input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #d6d6d6;
+  border-radius: 999px;
+  background: #f9f9f9;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #444;
+}
+
+.search-area input::placeholder {
+  color: #8c8c8c;
+}
+
+.search-area input:focus-visible,
+.simple-input:focus-visible {
+  outline: 2px solid #97b6ff;
+  outline-offset: 1px;
+}
+
+.sort-row {
+  height: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #2f2f2f;
+  font-weight: 600;
+}
+
+.product-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.product-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+  background: #d3d3d3;
+  border-radius: 10px;
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.card-top {
+  display: flex;
+  gap: 12px;
+}
+
+.product-thumb {
+  flex: 0 0 74px;
+  width: 74px;
+  height: 74px;
+  border-radius: 12px;
+  border: 1px solid #c8c8c8;
+  object-fit: cover;
+  background: #eee;
+}
+
+.product-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title-row h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #111;
+  font-weight: 800;
+}
+
+.grade-pill {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #608ef2;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.price {
+  margin: 2px 0 8px;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-row button {
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  height: 30px;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.buy-btn {
+  border: 1px solid #212121;
+  background: #fff;
+  color: #212121;
+}
+
+.compare-btn {
+  border: 1px solid #608ef2;
+  background: #608ef2;
+  color: #fff;
+}
+
+.nutrition-row {
+  margin: 12px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  text-align: center;
+}
+
+.nutrition-row div {
+  min-width: 0;
+}
+
+.nutrition-row dt {
+  margin: 0 0 2px;
+  font-size: 10px;
+  color: #8f8f8f;
+  font-weight: 600;
+}
+
+.nutrition-row dd {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.1;
+  color: #111;
+  font-weight: 800;
+}
+
+.nutrition-row .protein {
+  color: #ff4d50;
+}
+
+.simple-page {
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.simple-page h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.simple-page p {
+  margin: 0;
+  color: #555;
+  font-size: 13px;
+}
+
+.simple-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+}
+
+.simple-input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  padding: 0 10px;
+}
+
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-btn {
+  border: 1px solid #d5d5d5;
+  background: #f6f6f6;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.primary-btn,
+.secondary-btn {
+  border-radius: 8px;
+  height: 36px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-btn {
+  border: 1px solid #608ef2;
+  background: #608ef2;
+  color: #fff;
+}
+
+.secondary-btn {
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  color: #333;
+}
+
+.auth-btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.simple-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #333;
+  font-size: 14px;
+}
+
+/* ── Login Page ── */
+.login-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
+}
+
+.login-top {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-title {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ff7f83;
+  line-height: 1;
+}
+
+.login-social {
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.social-btn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.15s;
+}
+
+.social-btn:active {
+  opacity: 0.8;
+}
+
+.social-btn--naver {
+  background: #03c75a;
+  border: none;
+  color: #fff;
+}
+
+.social-btn--kakao {
+  background: #fee500;
+  border: none;
+  color: #000;
+}
+
+.social-btn--google {
+  background: #fff;
+  border: 1px solid #d5d5d5;
+  color: #333;
+}
+
+.social-btn--apple {
+  background: #fff;
+  border: 1px solid #d5d5d5;
+  color: #111;
+}
+
+
+.search-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-page-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.1;
+  color: #989898;
+  font-weight: 700;
+}
+
+.search-panel {
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  border: 1px solid #dfdfdf;
+  padding: 16px 14px 22px;
+  overflow-y: auto;
+}
+
+.search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.search-back-btn {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #111;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.search-back-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  border: 1px solid #d2d2d2;
+  border-radius: 999px;
+  padding: 0 12px;
+  background: #fff;
+  font-size: 14px;
+}
+
+.search-input::placeholder {
+  color: #8f8f8f;
+}
+
+.search-input:focus-visible,
+.search-back-btn:focus-visible,
+.search-chip-btn:focus-visible {
+  outline: 2px solid #97b6ff;
+  outline-offset: 1px;
+}
+
+.search-keyword-section {
+  margin-top: 16px;
+}
+
+.search-keyword-section h3 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+  color: #111;
+  font-weight: 800;
+}
+
+.search-chip-wrap {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.search-chip-btn {
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  border-radius: 999px;
+  height: 30px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #222;
+  cursor: pointer;
+}
+
+.popular-keyword-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.popular-keyword-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popular-keyword-item {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #222;
+  font-size: 14px;
+}
+
+.popular-rank {
+  width: 16px;
+}
+
+.popular-term {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

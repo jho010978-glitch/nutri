@@ -1,0 +1,241 @@
+﻿.mypage {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mypage-page-title {
+  margin: 0;
+}
+
+.mypage-panel {
+  flex: 1;
+  min-height: 0;
+  background: #f7f7f7;
+  border: 1px solid #dbdbdb;
+  padding: 16px 14px 20px;
+  overflow-y: auto;
+}
+
+.mypage-head-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.mypage-head-row h3 {
+  margin: 0;
+}
+
+.mypage-icon-btn {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #111;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.mypage-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.mypage-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 18px;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.mypage-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background: #d2d2d2;
+  color: #f8f8f8;
+  display: grid;
+  place-items: center;
+  flex: 0 0 52px;
+}
+
+.mypage-avatar svg {
+  width: 34px;
+  height: 34px;
+  fill: currentColor;
+}
+
+.mypage-profile-name-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mypage-profile-name {
+  line-height: 1;
+}
+
+.mypage-edit-icon {
+  color: #8d8d8d;
+  font-size: 12px;
+}
+
+.mypage-block {
+  border-bottom: 1px solid #dfdfdf;
+  padding: 16px 0;
+}
+
+.mypage-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mypage-block-head h4 {
+  margin: 0;
+}
+
+.mypage-link-btn {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #111;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.mypage-link-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.mypage-info-list {
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mypage-info-item {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: center;
+}
+
+.mypage-info-item dt,
+.mypage-info-item dd {
+  margin: 0;
+  color: #161616;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.mypage-info-item dt {
+  font-weight: 600;
+}
+
+.mypage-info-item dd {
+  font-weight: 500;
+}
+
+.mypage-saved-list {
+  margin: 12px -2px 0;
+  padding: 0 2px;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.mypage-saved-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.mypage-saved-list::-webkit-scrollbar-thumb {
+  background: #d3d3d3;
+  border-radius: 999px;
+}
+
+.mypage-saved-item {
+  flex: 0 0 88px;
+}
+
+.mypage-saved-item img {
+  width: 88px;
+  height: 88px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid #d8d8d8;
+  background: #ececec;
+}
+
+.mypage-single-row {
+  padding-bottom: 0;
+}
+
+.mypage-menu-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.mypage-menu-row {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  border-bottom: 1px solid #ececec;
+  background: transparent;
+  padding: 0;
+  color: #111;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.mypage-menu-row:last-child {
+  border-bottom: 0;
+}
+
+.mypage-menu-row svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.mypage-feedback {
+  min-height: 88px;
+  border: 1px dashed #d7d7d7;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.mypage-feedback-error {
+  border-color: #f0b0b0;
+}
+
+.mypage-icon-btn:focus-visible,
+.mypage-link-btn:focus-visible,
+.mypage-menu-row:focus-visible {
+  outline: 2px solid #97b6ff;
+  outline-offset: 1px;
+}

@@ -1,0 +1,213 @@
+/* ── 전체 화면 채우기 (phone frame 기준) ─────────────────────── */
+.ups-root {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;     /* .mobile-page 와 동일 */
+  background: #fff;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px 20px;
+  gap: 0;
+}
+
+/* ── 닫기 버튼 ────────────────────────────────────────────────── */
+.ups-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: 0;
+  font-size: 17px;
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+}
+
+.ups-close:hover {
+  color: #444;
+}
+
+/* ── 제목 ─────────────────────────────────────────────────────── */
+.ups-title {
+  margin: 0 0 28px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.5;
+  padding-right: 24px;
+}
+
+/* ── 본문 (필드들) ────────────────────────────────────────────── */
+.ups-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ── 필드 래퍼 ────────────────────────────────────────────────── */
+.ups-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ups-field-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* ── 숫자 입력 ────────────────────────────────────────────────── */
+.ups-number-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ups-number-input {
+  height: 40px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  background: #fff;
+  text-align: center;
+}
+
+.ups-number-input--compact {
+  width: 88px;
+}
+
+.ups-number-input--wide {
+  width: 100%;
+  text-align: left;
+}
+
+.ups-number-input:focus-visible {
+  outline: 2px solid #97b6ff;
+  outline-offset: 1px;
+}
+
+/* 숫자 스피너 제거 */
+.ups-number-input::-webkit-inner-spin-button,
+.ups-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ups-number-input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.ups-unit {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* ── 선택 버튼 그룹 ───────────────────────────────────────────── */
+.ups-options {
+  display: flex;
+  gap: 6px;
+}
+
+.ups-opt-btn {
+  flex: 1;
+  height: 36px;
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.ups-opt-btn:hover {
+  border-color: #ffb0b2;
+  color: #ff7f83;
+}
+
+.ups-opt-btn--on {
+  background: #ff7f83;
+  border-color: #ff7f83;
+  color: #fff;
+}
+
+/* ── 보조 힌트 ────────────────────────────────────────────────── */
+.ups-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+}
+
+/* ── 하단 영역 ────────────────────────────────────────────────── */
+.ups-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 20px;
+}
+
+/* ── 버튼 행 ──────────────────────────────────────────────────── */
+.ups-btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.ups-btn-row--single {
+  grid-template-columns: 1fr;
+}
+
+.ups-back-btn,
+.ups-next-btn {
+  height: 46px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ups-back-btn {
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  color: #555;
+}
+
+.ups-back-btn:hover {
+  background: #f6f6f6;
+}
+
+.ups-next-btn {
+  border: 1px solid #ff7f83;
+  background: #ff7f83;
+  color: #fff;
+}
+
+.ups-next-btn:hover {
+  background: #ff6468;
+  border-color: #ff6468;
+}
+
+/* ── 진행 바 ──────────────────────────────────────────────────── */
+.ups-progress-bar {
+  height: 4px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ups-progress-fill {
+  height: 100%;
+  background: #ff7f83;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
