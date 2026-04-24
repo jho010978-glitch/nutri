@@ -1,37 +1,39 @@
-﻿.mypage {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mypage-page-title {
-  margin: 0;
-}
-
-.mypage-panel {
+.mypage {
   flex: 1;
   min-height: 0;
-  background: #f7f7f7;
-  border: 1px solid #dbdbdb;
-  padding: 16px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f3f4f6;
+  margin: -14px;
+  padding: 14px 14px 24px;
+  border-radius: 14px;
   overflow-y: auto;
 }
 
-.mypage-head-row {
-  display: flex;
+/* ── 상단바 ─────────────────────────────────────── */
+.mypage-topbar {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
+  padding: 4px 0 2px;
 }
 
-.mypage-head-row h3 {
+.mypage-topbar-title {
   margin: 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #888;
+}
+
+.mypage-topbar-spacer {
+  display: block;
 }
 
 .mypage-icon-btn {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border: 0;
   padding: 0;
   background: transparent;
@@ -42,200 +44,244 @@
 }
 
 .mypage-icon-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
 }
 
+/* ── 프로필 ─────────────────────────────────────── */
 .mypage-profile {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 8px 0 18px;
-  border-bottom: 1px solid #dfdfdf;
+  padding: 10px 0 16px;
 }
 
 .mypage-avatar {
-  width: 52px;
-  height: 52px;
+  width: 88px;
+  height: 88px;
   border-radius: 999px;
-  background: #d2d2d2;
-  color: #f8f8f8;
-  display: grid;
-  place-items: center;
-  flex: 0 0 52px;
+  background: #b9bcc1;
 }
 
-.mypage-avatar svg {
-  width: 34px;
-  height: 34px;
+.mypage-name-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mypage-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+}
+
+.mypage-name-edit {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #888;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.mypage-name-edit svg {
+  width: 14px;
+  height: 14px;
   fill: currentColor;
 }
 
-.mypage-profile-name-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+/* ── 카드 ───────────────────────────────────────── */
+.mypage-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 16px 6px;
+  display: flex;
+  flex-direction: column;
 }
 
-.mypage-profile-name {
-  line-height: 1;
+.mypage-card-title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
 }
 
-.mypage-edit-icon {
-  color: #8d8d8d;
-  font-size: 12px;
-}
-
-.mypage-block {
-  border-bottom: 1px solid #dfdfdf;
-  padding: 16px 0;
-}
-
-.mypage-block-head {
+/* ── 행 ─────────────────────────────────────────── */
+.mypage-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-}
-
-.mypage-block-head h4 {
-  margin: 0;
-}
-
-.mypage-link-btn {
-  border: 0;
-  padding: 0;
+  width: 100%;
+  min-height: 48px;
+  border-top: 1px solid #f0f0f0;
+  padding: 0 2px;
   background: transparent;
-  color: #111;
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
+}
+
+.mypage-row:first-of-type {
+  border-top: 0;
+  margin-top: 8px;
+}
+
+.mypage-row--btn {
+  border: 0;
+  border-top: 1px solid #f0f0f0;
+  text-align: left;
   cursor: pointer;
+  font: inherit;
+  color: #111;
 }
 
-.mypage-link-btn svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
+.mypage-row--btn:first-of-type {
+  border-top: 0;
 }
 
-.mypage-info-list {
-  margin: 12px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.mypage-info-item {
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  align-items: center;
-}
-
-.mypage-info-item dt,
-.mypage-info-item dd {
-  margin: 0;
-  color: #161616;
-  font-size: 13px;
-  line-height: 1.2;
-}
-
-.mypage-info-item dt {
-  font-weight: 600;
-}
-
-.mypage-info-item dd {
+.mypage-row-label {
+  font-size: 14px;
+  color: #222;
   font-weight: 500;
 }
 
-.mypage-saved-list {
-  margin: 12px -2px 0;
-  padding: 0 2px;
-  list-style: none;
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
+.mypage-row svg {
+  width: 18px;
+  height: 18px;
+  fill: #b6b6b6;
 }
 
-.mypage-saved-list::-webkit-scrollbar {
-  height: 6px;
-}
-
-.mypage-saved-list::-webkit-scrollbar-thumb {
-  background: #d3d3d3;
+.mypage-pill {
+  border: 1px solid #e0e0e0;
+  background: #f5f5f5;
   border-radius: 999px;
-}
-
-.mypage-saved-item {
-  flex: 0 0 88px;
-}
-
-.mypage-saved-item img {
-  width: 88px;
-  height: 88px;
-  border-radius: 14px;
-  object-fit: cover;
-  border: 1px solid #d8d8d8;
-  background: #ececec;
-}
-
-.mypage-single-row {
-  padding-bottom: 0;
-}
-
-.mypage-menu-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.mypage-menu-row {
-  width: 100%;
-  min-height: 42px;
-  border: 0;
-  border-bottom: 1px solid #ececec;
-  background: transparent;
-  padding: 0;
-  color: #111;
-  font-size: 16px;
-  font-weight: 700;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: 26px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
   cursor: pointer;
 }
 
-.mypage-menu-row:last-child {
-  border-bottom: 0;
+.mypage-pill:hover {
+  border-color: #888;
+  color: #111;
 }
 
-.mypage-menu-row svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
+/* ── 비로그인 ────────────────────────────────────── */
+.mypage-guest {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
 }
 
-.mypage-feedback {
-  min-height: 88px;
-  border: 1px dashed #d7d7d7;
-  border-radius: 8px;
+.mypage-avatar--guest {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  background: #b9bcc1;
+  margin-bottom: 14px;
+}
+
+.mypage-guest-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.mypage-guest-login svg {
+  width: 16px;
+  height: 16px;
+  fill: #555;
+}
+
+.mypage-guest-illust {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 로그아웃 모달 ──────────────────────────────── */
+.mp-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  border-radius: 14px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.mp-modal {
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mp-modal-msg {
+  margin: 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  line-height: 1.5;
+}
+
+.mp-modal-btns {
   display: grid;
-  place-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
-.mypage-feedback-error {
-  border-color: #f0b0b0;
+.mp-modal-btns--single {
+  grid-template-columns: 1fr;
 }
+
+.mp-modal-btn {
+  height: 44px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+}
+
+.mp-modal-btn--cancel {
+  background: #f5f5f5;
+  color: #555;
+}
+
+.mp-modal-btn--ok {
+  background: #f5f5f5;
+  color: #555;
+}
+
+.mp-modal-btn:hover { background: #ebebeb; }
 
 .mypage-icon-btn:focus-visible,
-.mypage-link-btn:focus-visible,
-.mypage-menu-row:focus-visible {
-  outline: 2px solid #97b6ff;
+.mypage-name-edit:focus-visible,
+.mypage-row--btn:focus-visible,
+.mypage-pill:focus-visible {
+  outline: 2px solid #111;
   outline-offset: 1px;
+  border-radius: 4px;
 }

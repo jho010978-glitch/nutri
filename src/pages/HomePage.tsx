@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useFavorites } from '../contexts/FavoritesContext'
 import { FilterIcon, UserIcon } from '../components/icons'
 import { useProductListQuery } from '../queries/productQueries'
 import type { ProductResponse } from '../api/products/types'
@@ -10,128 +12,123 @@ type HomePageProps = {
   onAddToCompare?: (product: Product) => void
 }
 
+const CATEGORIES = [
+  { id: 'salad',   label: '샐러드',  emoji: '🥗' },
+  { id: 'chicken', label: '닭가슴살', emoji: '🍗' },
+  { id: 'soy',     label: '두유',    emoji: '🫛' },
+  { id: 'konjac',  label: '곤약',    emoji: '🍢' },
+]
+
+const FILTER_CHIPS = ['추천순', '브랜드', '성분']
+
 function mapToProduct(p: ProductResponse): Product {
   return {
     id: p.id,
     name: p.name,
     image: p.imageUrl ?? '',
     price: p.price != null ? `${p.price.toLocaleString('ko-KR')}원` : '-',
-    protein: '-',
-    calories: '-',
-    fat: '-',
-    carbs: '-',
+    protein: '-', calories: '-', fat: '-', carbs: '-',
     grade: p.grade ?? '-',
     score: p.score ?? 0,
   }
 }
 
-export const HomePage = ({ onMoveToFilter, onMoveToMyPage, onProductClick, onAddToCompare }: HomePageProps) => {
+export const HomePage = ({ onMoveToFilter, onMoveToMyPage, onProductClick }: HomePageProps) => {
   const { data, isLoading, isError } = useProductListQuery()
   const products = data?.content ?? []
+  const [activeCat, setActiveCat] = useState(0)
+  const { toggle, isFavorite } = useFavorites()
 
   return (
-    <>
-      <header className="top-area">
-        <h2>영양대학</h2>
+    <div className="home-page">
+      <header className="home-header">
         <button className="icon-btn" type="button" aria-label="마이페이지" onClick={onMoveToMyPage}>
           <UserIcon />
         </button>
       </header>
 
-      <div className="search-area">
+      <div className="home-search">
+        <svg className="home-search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M10 2a8 8 0 1 1-5.3 14L1 19.7 2.3 21l3.7-3.7A8 8 0 0 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z" fill="#9a9a9a"/>
+        </svg>
         <input type="text" placeholder="검색" aria-label="상품 검색" />
       </div>
 
-      <div className="sort-row">
-        <span>인기많은순</span>
-        <button className="icon-btn" type="button" aria-label="필터" onClick={onMoveToFilter}>
-          <FilterIcon />
-        </button>
+      <div className="home-cats-wrap">
+        <div className="home-cats" role="list" aria-label="카테고리">
+          {CATEGORIES.map((c, i) => (
+            <button
+              key={c.id}
+              type="button"
+              className={`home-cat${i === activeCat ? ' home-cat--on' : ''}`}
+              role="listitem"
+              onClick={() => setActiveCat(i)}
+            >
+              <span className="home-cat-emoji" aria-hidden="true">{c.emoji}</span>
+              <span className="home-cat-label">{c.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="home-cat-dots" aria-hidden="true">
+          {CATEGORIES.map((_, i) => (
+            <span key={i} className={`home-cat-dot${i === activeCat ? ' home-cat-dot--on' : ''}`} />
+          ))}
+        </div>
       </div>
 
-      {isLoading && (
-        <p style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>불러오는 중...</p>
-      )}
-      {isError && (
-        <p style={{ textAlign: 'center', color: '#b42318', padding: '2rem' }}>상품을 불러오지 못했습니다.</p>
-      )}
+      <div className="home-chips">
+        <button className="home-chip-icon" type="button" aria-label="필터" onClick={onMoveToFilter}>
+          <FilterIcon />
+        </button>
+        {FILTER_CHIPS.map(label => (
+          <button key={label} type="button" className="home-chip">
+            {label} <span aria-hidden="true">▾</span>
+          </button>
+        ))}
+      </div>
 
-      <section className="product-list" aria-label="상품 목록">
-        {products.map((item) => {
+      <div className="home-divider" />
+
+      {isLoading && <p style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>불러오는 중...</p>}
+      {isError && <p style={{ textAlign: 'center', color: '#b42318', padding: '2rem' }}>상품을 불러오지 못했습니다.</p>}
+
+      <section className="home-grid" aria-label="상품 목록">
+        {products.map(item => {
           const product = mapToProduct(item)
+          const faved = isFavorite(item.id)
           return (
-            <article
-              className="product-card"
-              key={item.id}
-              onClick={() => onProductClick?.(product)}
-              style={{ cursor: 'pointer' }}
-            >
-              <div className="card-top">
-                <img className="product-thumb" src={item.imageUrl} alt={item.name} />
-
-                <div className="product-main">
-                  <div className="title-row">
-                    <h3>{item.name}</h3>
-                    <span className="grade-pill">{item.grade}</span>
-                  </div>
-
-                  <p style={{ fontSize: '0.8rem', color: '#888', margin: '2px 0' }}>
-                    {item.brand} · {item.categoryName}
-                  </p>
-
-                  <p className="price">
+            <article key={item.id} className="home-card" onClick={() => onProductClick?.(product)}>
+              <div className="home-card-img-wrap">
+                {item.imageUrl
+                  ? <img className="home-card-img" src={item.imageUrl} alt={item.name} loading="lazy" />
+                  : <div className="home-card-img home-card-img--placeholder" />
+                }
+                <span className="home-card-grade">{item.grade ?? 'A'}</span>
+              </div>
+              <div className="home-card-bottom">
+                <div className="home-card-text">
+                  <p className="home-card-brand">{item.brand ?? '-'}</p>
+                  <p className="home-card-name">{item.name}</p>
+                  <p className="home-card-price">
                     {item.price != null ? `${item.price.toLocaleString('ko-KR')}원` : '-'}
                   </p>
-
-                  <div className="btn-row">
-                    {item.coupangLink ? (
-                      <a
-                        href={item.coupangLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="buy-btn"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        구매하러가기
-                      </a>
-                    ) : (
-                      <button type="button" className="buy-btn" disabled>
-                        구매하러가기
-                      </button>
-                    )}
-                    <button
-                      type="button"
-                      className="compare-btn"
-                      onClick={(e) => { e.stopPropagation(); onAddToCompare?.(product) }}
-                    >
-                      비교하기
-                    </button>
-                  </div>
+                  <p className="home-card-per">
+                    {item.price != null ? `100g당 ${item.price.toLocaleString('ko-KR')}원` : ''}
+                  </p>
                 </div>
+                <button
+                  type="button"
+                  className={`home-card-heart${faved ? ' on' : ''}`}
+                  aria-label={faved ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+                  onClick={e => { e.stopPropagation(); toggle(item.id) }}
+                >
+                  {faved ? '♥' : '♡'}
+                </button>
               </div>
-
-              <dl className="nutrition-row">
-                <div>
-                  <dt>점수</dt>
-                  <dd>{item.score}점</dd>
-                </div>
-                <div>
-                  <dt>등급</dt>
-                  <dd className="protein">{item.grade}</dd>
-                </div>
-                <div>
-                  <dt>카테고리</dt>
-                  <dd>{item.categoryName}</dd>
-                </div>
-                <div>
-                  <dt>브랜드</dt>
-                  <dd>{item.brand}</dd>
-                </div>
-              </dl>
             </article>
           )
         })}
       </section>
-    </>
+    </div>
   )
 }

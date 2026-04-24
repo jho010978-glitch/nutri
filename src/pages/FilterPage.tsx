@@ -1,268 +1,116 @@
 import { useState } from 'react'
 import './FilterPage.css'
-import { Typography } from '../components/Typography'
 
 type FilterPageProps = {
-  onBack?: () => void
+  onClose: () => void
 }
 
-type FilterGroupKey = 'category' | 'brand' | 'nutrition'
-
-const CATEGORIES = ['영양제', '단백질', '탄수화물', '비타민', '미네랄', '건강식품', '다이어트', '프로바이오틱스']
-
-const BRANDS = ['닥터베스트', '나우푸드', '솔가', '얼티맥스', '뉴트리코어', '바이탈', '비타민마트', 'GNC']
-
-type NutrientConfig = {
-  key: string
-  label: string
-  unit: string
-  absMax: number
-  step: number
-  defaultMax: number
-}
-
-const NUTRIENTS: NutrientConfig[] = [
-  { key: 'calories', label: '칼로리', unit: 'kcal', absMax: 1000, step: 10, defaultMax: 1000 },
-  { key: 'carbs', label: '탄수화물', unit: 'g', absMax: 100, step: 1, defaultMax: 100 },
-  { key: 'protein', label: '단백질', unit: 'g', absMax: 50, step: 1, defaultMax: 50 },
-  { key: 'fat', label: '지방', unit: 'g', absMax: 50, step: 1, defaultMax: 50 },
-  { key: 'sugar', label: '당류', unit: 'g', absMax: 50, step: 1, defaultMax: 50 },
-  { key: 'sodium', label: '나트륨', unit: 'mg', absMax: 500, step: 5, defaultMax: 500 },
+const FOOD_CATS = [
+  '견과류', '곡류, 시리얼', '면류', '음료류',
+  '과일류', '채소류', '유제품', '육류, 어류',
+  '조미료', '간식류', '식용유', '음료수, 주스',
+  '해산물', '냉동식품', '베이커리', '디저트류',
 ]
 
-type RangeState = { min: number; max: number }
+const BRANDS = ['풀무원', '꼬기닭', '하닭', '하림']
 
-type NutritionRanges = Record<string, RangeState>
+const CALORIE_CHIPS = ['저당', '고단백']
 
-const initNutritionRanges = (): NutritionRanges =>
-  Object.fromEntries(NUTRIENTS.map((n) => [n.key, { min: 0, max: n.defaultMax }]))
+export const FilterPage = ({ onClose }: FilterPageProps) => {
+  const [catOpen, setCatOpen] = useState(true)
+  const [brandOpen, setBrandOpen] = useState(false)
+  const [calOpen, setCalOpen] = useState(false)
 
-type RangeSliderProps = {
-  nutrient: NutrientConfig
-  value: RangeState
-  onChange: (next: RangeState) => void
-}
+  const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set())
+  const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set())
+  const [selectedCal, setSelectedCal] = useState<Set<string>>(new Set())
 
-const RangeSlider = ({ nutrient, value, onChange }: RangeSliderProps) => {
-  const { absMax, step, unit, label } = nutrient
-  const minPct = (value.min / absMax) * 100
-  const maxPct = (value.max / absMax) * 100
-
-  const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const next = Math.min(Number(e.target.value), value.max - step)
-    onChange({ ...value, min: next })
+  const toggleSet = (set: Set<string>, item: string): Set<string> => {
+    const next = new Set(set)
+    if (next.has(item)) next.delete(item)
+    else next.add(item)
+    return next
   }
-
-  const handleMax = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const next = Math.max(Number(e.target.value), value.min + step)
-    onChange({ ...value, max: next })
-  }
-
-  const isAtMax = value.max >= absMax
 
   return (
-    <div className="nutrient-row">
-      <Typography as="p" variant="label" weight="medium" color="#3a3a3a">
-        {label}
-      </Typography>
-      <div className="range-label-row">
-        <span className="range-label-value">
-          {value.min}
-          {unit}
-        </span>
-        <span className="range-label-sep">~</span>
-        <span className="range-label-value">
-          {value.max}
-          {unit}
-          {isAtMax ? '+' : ''}
-        </span>
-      </div>
-      <div className="range-track-wrap">
-        <div className="range-track">
-          <div
-            className="range-fill"
-            style={{ left: `${minPct}%`, width: `${maxPct - minPct}%` }}
-          />
+    <div className="fil-overlay">
+      <div className="fil-panel">
+        <header className="fil-header">
+          <span className="fil-header-title">필터</span>
+          <button type="button" className="fil-close" aria-label="닫기" onClick={onClose}>✕</button>
+        </header>
+
+        <div className="fil-body">
+          {/* 식품 카테고리 */}
+          <div className="fil-section">
+            <button type="button" className="fil-section-btn" onClick={() => setCatOpen(v => !v)}>
+              <span>식품 카테고리</span>
+              <span className="fil-chevron">{catOpen ? '∧' : '∨'}</span>
+            </button>
+            {catOpen && (
+              <div className="fil-grid2">
+                {FOOD_CATS.map(cat => (
+                  <label key={cat} className="fil-check-label">
+                    <input
+                      type="checkbox"
+                      className="fil-check"
+                      checked={selectedCats.has(cat)}
+                      onChange={() => setSelectedCats(toggleSet(selectedCats, cat))}
+                    />
+                    <span>{cat}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 브랜드 */}
+          <div className="fil-section">
+            <button type="button" className="fil-section-btn" onClick={() => setBrandOpen(v => !v)}>
+              <span>브랜드</span>
+              <span className="fil-chevron">{brandOpen ? '∧' : '∨'}</span>
+            </button>
+            {brandOpen && (
+              <div className="fil-grid2">
+                {BRANDS.map(b => (
+                  <label key={b} className="fil-check-label">
+                    <input
+                      type="checkbox"
+                      className="fil-check"
+                      checked={selectedBrands.has(b)}
+                      onChange={() => setSelectedBrands(toggleSet(selectedBrands, b))}
+                    />
+                    <span>{b}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 칼로리 */}
+          <div className="fil-section">
+            <button type="button" className="fil-section-btn" onClick={() => setCalOpen(v => !v)}>
+              <span>칼로리</span>
+              <span className="fil-chevron">{calOpen ? '∧' : '∨'}</span>
+            </button>
+            {calOpen && (
+              <div className="fil-chips">
+                {CALORIE_CHIPS.map(c => (
+                  <label key={c} className="fil-check-label">
+                    <input
+                      type="checkbox"
+                      className="fil-check"
+                      checked={selectedCal.has(c)}
+                      onChange={() => setSelectedCal(toggleSet(selectedCal, c))}
+                    />
+                    <span>{c}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <input
-          type="range"
-          className="range-input range-input-min"
-          min={0}
-          max={absMax}
-          step={step}
-          value={value.min}
-          onChange={handleMin}
-          aria-label={`${label} 최솟값`}
-        />
-        <input
-          type="range"
-          className="range-input range-input-max"
-          min={0}
-          max={absMax}
-          step={step}
-          value={value.max}
-          onChange={handleMax}
-          aria-label={`${label} 최댓값`}
-        />
       </div>
     </div>
-  )
-}
-
-export const FilterPage = ({ onBack }: FilterPageProps) => {
-  const [openGroups, setOpenGroups] = useState<Set<FilterGroupKey>>(new Set())
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set())
-  const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set())
-  const [nutritionRanges, setNutritionRanges] = useState<NutritionRanges>(initNutritionRanges)
-
-  const toggle = (group: FilterGroupKey) => {
-    setOpenGroups((prev) => {
-      const next = new Set(prev)
-      if (next.has(group)) {
-        next.delete(group)
-      } else {
-        next.add(group)
-      }
-      return next
-    })
-  }
-
-  const toggleCategory = (cat: string) => {
-    setSelectedCategories((prev) => {
-      const next = new Set(prev)
-      if (next.has(cat)) next.delete(cat)
-      else next.add(cat)
-      return next
-    })
-  }
-
-  const toggleBrand = (brand: string) => {
-    setSelectedBrands((prev) => {
-      const next = new Set(prev)
-      if (next.has(brand)) next.delete(brand)
-      else next.add(brand)
-      return next
-    })
-  }
-
-  const handleReset = () => {
-    setOpenGroups(new Set())
-    setSelectedCategories(new Set())
-    setSelectedBrands(new Set())
-    setNutritionRanges(initNutritionRanges())
-  }
-
-  const groups: { key: FilterGroupKey; label: string }[] = [
-    { key: 'category', label: '카테고리' },
-    { key: 'brand', label: '브랜드' },
-    { key: 'nutrition', label: '영양성분' },
-  ]
-
-  return (
-    <section className="filter-sheet" aria-label="필터">
-      <div className="filter-handle" aria-hidden="true" />
-
-      <header className="filter-header">
-        <button type="button" className="filter-back-btn" aria-label="뒤로 가기" onClick={onBack}>
-          <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path d="M15.7 5.3a1 1 0 0 1 0 1.4L10.41 12l5.3 5.3a1 1 0 1 1-1.42 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.42 0Z" />
-          </svg>
-        </button>
-        <Typography as="h2" variant="bodyStrong" color="#141414" style={{ textAlign: 'center', letterSpacing: '-0.02em' }}>
-          필터
-        </Typography>
-        <span className="filter-header-spacer" aria-hidden="true" />
-      </header>
-
-      <div className="filter-reset-row">
-        <button type="button" className="filter-reset-btn" onClick={handleReset}>
-          <Typography as="span" variant="body" color="#8a8a8a" style={{ lineHeight: 1 }}>
-            초기화
-          </Typography>
-        </button>
-      </div>
-
-      <ul className="filter-group-list">
-        {groups.map(({ key, label }) => {
-          const isOpen = openGroups.has(key)
-          return (
-            <li key={key} className="filter-group-item">
-              <button
-                type="button"
-                className={`filter-group-btn${isOpen ? ' open' : ''}`}
-                aria-expanded={isOpen}
-                onClick={() => toggle(key)}
-              >
-                <Typography as="span" variant="body" weight="medium">
-                  {label}
-                </Typography>
-                <svg
-                  viewBox="0 0 24 24"
-                  role="img"
-                  aria-hidden="true"
-                  className={`filter-chevron${isOpen ? ' rotated' : ''}`}
-                >
-                  <path d="M6.3 8.3a1 1 0 0 1 1.4 0l4.3 4.3 4.3-4.3a1 1 0 0 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 0-1.4Z" />
-                </svg>
-              </button>
-
-              <div className={`filter-group-content${isOpen ? ' open' : ''}`} aria-hidden={!isOpen}>
-                <div className="filter-group-inner">
-                  {key === 'category' && (
-                    <div className="category-chip-list">
-                      {CATEGORIES.map((cat) => (
-                        <button
-                          key={cat}
-                          type="button"
-                          className={`category-chip${selectedCategories.has(cat) ? ' selected' : ''}`}
-                          onClick={() => toggleCategory(cat)}
-                        >
-                          {cat}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {key === 'brand' && (
-                    <ul className="brand-list">
-                      {BRANDS.map((brand) => (
-                        <li key={brand}>
-                          <label className="brand-label">
-                            <input
-                              type="checkbox"
-                              className="brand-checkbox"
-                              checked={selectedBrands.has(brand)}
-                              onChange={() => toggleBrand(brand)}
-                            />
-                            <Typography as="span" variant="body" color="#3a3a3a">
-                              {brand}
-                            </Typography>
-                          </label>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {key === 'nutrition' && (
-                    <div className="nutrition-list">
-                      {NUTRIENTS.map((nutrient) => (
-                        <RangeSlider
-                          key={nutrient.key}
-                          nutrient={nutrient}
-                          value={nutritionRanges[nutrient.key]}
-                          onChange={(next) =>
-                            setNutritionRanges((prev) => ({ ...prev, [nutrient.key]: next }))
-                          }
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </li>
-          )
-        })}
-      </ul>
-    </section>
   )
 }

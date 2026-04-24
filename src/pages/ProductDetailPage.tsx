@@ -1,205 +1,116 @@
-import productImage from '../assets/images/product.png'
-import { BackArrowIcon, ShareIcon } from '../components/icons'
+import { useFavorites } from '../contexts/FavoritesContext'
+import { useProductDetailQuery } from '../queries/productQueries'
 import type { Product } from '../types/product'
 import './ProductDetailPage.css'
 
 type ProductDetailPageProps = {
   product: Product
   onBack: () => void
-  onAddToCompare?: (product: Product) => void
 }
 
-const nutritionItems = [
-  { label: '영양', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '나트륨', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '탄수화물', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '당류', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '지방', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '트랜스지방', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '포화지방', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '콜레스테롤', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-  { label: '단백질', value: '300', unit: 'kcal', ref: '/2000kcal', pct: 15 },
-]
+const NUTRITION_DEFS = [
+  { key: 'calories',      label: '열량',    unit: 'kcal', max: 2000 },
+  { key: 'sodium',        label: '나트륨',  unit: 'mg',   max: 2000 },
+  { key: 'carbohydrates', label: '탄수화물', unit: 'g',   max: 324  },
+  { key: 'sugars',        label: '당류',    unit: 'g',    max: 100  },
+  { key: 'fat',           label: '지방',    unit: 'g',    max: 54   },
+  { key: 'transFat',      label: '트랜스지방', unit: 'g', max: 2.2  },
+  { key: 'saturatedFat',  label: '포화지방', unit: 'g',   max: 15   },
+  { key: 'cholesterol',   label: '콜레스테롤', unit: 'mg', max: 300 },
+  { key: 'protein',       label: '단백질',  unit: 'g',    max: 55   },
+] as const
 
-const relatedProducts = [
-  { id: 1, brand: '하림', name: '하림 닭가슴살 플레테피 100g 10개', price: '19,530원', priceUnit: '100g당 ₩1,953' },
-  { id: 2, brand: '평상날', name: '평상날 소스통닭 닭가슴살 맛보기 18종, 30개, 100', price: '19,530원', priceUnit: '100g당 ₩1,953' },
-  { id: 3, brand: '하림', name: '하림 닭가슴살 큘릭 100g 20개', price: '19,530원', priceUnit: '100g당 ₩1,953' },
-]
-
-const photoReviews = [
-  { id: 1, rating: 5, text: '촉촉하고 부드러워요! 먹기 편하고 건강 샐러드에 곁들이기도 좋아요' },
-  { id: 2, rating: 5, text: '촉촉하고 부드러워요! 먹기 편하고 건강 샐러드에 곁들이기도 좋아요' },
-  { id: 3, rating: 5, text: '동봉된 박자재 먹기 좋고, 그냥 먹거나 샐러드에 곁들이기도 좋아요' },
-  { id: 4, rating: 5, text: '동봉된 박자재 먹기 좋고, 그냥 먹거나 샐러드에 곁들이기도 좋아요' },
-]
-
-const textReviews = [
-  { id: 1, text: '저염이라 건강하게 먹을 수 있고 식감도 퍽퍽하지 않아서 좋아요.' },
-  { id: 2, text: '다이어트 중인데 단백질 보충용으로 딱이에요. 재구매 의사 있습니다!' },
-  { id: 3, text: '맛이 담백하고 한 팩씩 포장되어 있어서 간편하게 먹기 좋아요.' },
-]
-
-export const ProductDetailPage = ({ product, onBack, onAddToCompare }: ProductDetailPageProps) => {
-  const score = product.score
-  const scoreDeg = score * 3.6
+export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) => {
+  const { isFavorite, toggle } = useFavorites()
+  const faved = isFavorite(product.id)
+  const detailQuery = useProductDetailQuery(product.id)
+  const detail = detailQuery.data
 
   return (
-    <div className="detail-page">
-      {/* Header */}
-      <header className="detail-header">
-        <button className="detail-back-btn icon-btn" type="button" aria-label="뒤로가기" onClick={onBack}>
-          <BackArrowIcon />
+    <div className="det-page">
+      {/* 상단 바 */}
+      <header className="det-header">
+        <button type="button" className="det-icon-btn" aria-label="뒤로가기" onClick={onBack}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 5.3a1 1 0 0 1 0 1.4L10.41 12l5.3 5.3a1 1 0 1 1-1.42 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.42 0Z" fill="#111"/></svg>
+        </button>
+        <button
+          type="button"
+          className={`det-heart${faved ? ' on' : ''}`}
+          aria-label={faved ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+          onClick={() => toggle(product.id)}
+        >
+          {faved ? '♥' : '♡'}
         </button>
       </header>
 
-      {/* Product image grid */}
-      <div className="detail-image-grid">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <img key={i} src={product.image} alt={product.name} className="detail-grid-img" />
-        ))}
+      {/* 상품 이미지 */}
+      <div className="det-img-wrap">
+        {product.image
+          ? <img className="det-img" src={product.image} alt={product.name} />
+          : <div className="det-img det-img--placeholder" />
+        }
       </div>
 
-      {/* Product info */}
-      <div className="detail-info-block">
-        <div className="detail-info-row">
-          <div className="detail-info-left">
-            <h1 className="detail-product-name">{product.name}</h1>
-            <p className="detail-product-price">{product.price}</p>
-            <div className="detail-stars">★★★★★</div>
-          </div>
-          <div className="detail-score-badge">{score}</div>
-        </div>
-
-        <div className="detail-action-row">
-          <button type="button" className="detail-action-btn" onClick={() => onAddToCompare?.(product)}>비교하기</button>
-          <button type="button" className="detail-action-btn detail-action-btn--share">
-            <ShareIcon />
-            공유하기
+      {/* 상품 정보 */}
+      <div className="det-info">
+        <div className="det-info-top">
+          <span className="det-brand">{detail?.brand ?? '-'}</span>
+          <button type="button" className="det-icon-btn det-share" aria-label="공유">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
           </button>
         </div>
+        <h1 className="det-name">{product.name}</h1>
+        <p className="det-price">{product.price}</p>
+        <p className="det-per">
+          {detail?.price != null ? `100g당 ${detail.price.toLocaleString('ko-KR')}원` : ''}
+        </p>
       </div>
 
-      {/* Nutrition bars */}
-      <section className="detail-nutrition-card">
-        {nutritionItems.map((item) => (
-          <div key={item.label} className="detail-nutrition-row">
-            <span className="detail-nutrition-label">{item.label}</span>
-            <div className="detail-nutrition-bar-wrap">
-              <div className="detail-nutrition-bar" style={{ width: `${item.pct}%` }} />
-            </div>
-            <span className="detail-nutrition-val">{item.value}{item.unit}</span>
-            <span className="detail-nutrition-ref">{item.ref}</span>
-          </div>
-        ))}
-      </section>
-
-      {/* Quote */}
-      <p className="detail-quote">
-        "국내산 닭가슴살을 저온 수비드로 조리해 촉촉하고 부드러운 식감을 살린 건강 단백질 제품"
-      </p>
-
-      {/* Coupang button */}
-      <button type="button" className="detail-coupang-btn">
-        쿠팡 비교하기 →
-      </button>
-
-      {/* Nutrition score */}
-      <section className="detail-score-card">
-        <h2 className="detail-section-title">영양점수</h2>
-        <p className="detail-score-subtitle">닭가슴살 카테고리<br />총 400개 제품 중 상위 0.1%</p>
-
-        <div className="detail-score-body">
-          <div className="detail-tag-col">
-            <span className="detail-tag">고단백</span>
-            <span className="detail-tag">제로당</span>
-            <span className="detail-tag">저지방</span>
-          </div>
-
-          <div
-            className="detail-score-ring"
-            style={{
-              background: `conic-gradient(#ff7f83 0deg ${scoreDeg}deg, #e8e8e8 ${scoreDeg}deg 360deg)`,
-            }}
-          >
-            <div className="detail-score-inner">
-              <span className="detail-score-num">{score}점</span>
-            </div>
+      {/* 영양점수 카드 */}
+      <div className="det-score-card">
+        <div className="det-score-left">
+          <span className="det-score-crown">👑</span>
+          <span className="det-score-title">영양점수</span>
+          <p className="det-score-sub">{detail?.categoryName ?? '-'} 카테고리<br />총 400개 제품 중 상위 0.1%</p>
+        </div>
+        <div className="det-score-ring" style={{ background: `conic-gradient(#555 0deg ${(product.score / 100) * 360}deg, #e8e8e8 ${(product.score / 100) * 360}deg 360deg)` }}>
+          <div className="det-score-inner">
+            <span className="det-score-num">{product.score}점</span>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Popular products */}
-      <section className="detail-related-card">
-        <h2 className="detail-section-title">인기 상품</h2>
-        <div className="detail-related-scroll">
-          {relatedProducts.map((p) => (
-            <article key={p.id} className="detail-mini-card">
-              <img src={productImage} alt={p.name} className="detail-mini-img" />
-              <span className="detail-mini-brand">{p.brand}</span>
-              <p className="detail-mini-name">{p.name}</p>
-              <p className="detail-mini-price">{p.price}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      {/* 쿠팡 바로가기 */}
+      {detail?.coupangLink
+        ? <a href={detail.coupangLink} target="_blank" rel="noopener noreferrer" className="det-coupang-btn">쿠팡 바로가기</a>
+        : <button type="button" className="det-coupang-btn" disabled>쿠팡 바로가기</button>
+      }
 
-      {/* Recommended products */}
-      <section className="detail-related-card">
-        <h2 className="detail-section-title">추천 상품</h2>
-        <div className="detail-related-scroll">
-          {relatedProducts.map((p) => (
-            <article key={p.id} className="detail-mini-card">
-              <img src={productImage} alt={p.name} className="detail-mini-img" />
-              <span className="detail-mini-brand">{p.brand}</span>
-              <p className="detail-mini-name">{p.name}</p>
-              <p className="detail-mini-price">{p.price}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <div className="det-divider" />
 
-      {/* Reviews */}
-      <section className="detail-review-card">
-        <div className="detail-review-header">
-          <h2 className="detail-review-title">리뷰 ★★★★★</h2>
-          <span className="detail-review-count">(2048)</span>
-        </div>
-
-        <span className="detail-review-tab">포토/동영상</span>
-
-        <div className="detail-photo-grid">
-          {photoReviews.map((r) => (
-            <div key={r.id} className="detail-photo-review-item">
-              <div className="detail-review-thumb" />
-              <div className="detail-review-body">
-                <div className="detail-review-stars">{'★'.repeat(r.rating)}</div>
-                <p className="detail-review-text">{r.text}</p>
+      {/* 영양 성분 바 */}
+      <section className="det-nutrition" aria-label="영양 성분">
+        {NUTRITION_DEFS.map(({ key, label, unit, max }) => {
+          const raw = detail?.[key as keyof typeof detail] as number | undefined
+          const val = raw ?? 0
+          const pct = Math.min(100, (val / max) * 100)
+          return (
+            <div key={key} className="det-nut-row">
+              <span className="det-nut-label">{label}</span>
+              <div className="det-nut-bar-wrap">
+                <div className="det-nut-bar" style={{ width: `${pct}%` }} />
+              </div>
+              <div className="det-nut-vals">
+                <span>{val}{unit}</span>
+                <span>{max}{unit}</span>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="detail-text-review-list">
-          {textReviews.map((r) => (
-            <div key={r.id} className="detail-text-review-item">
-              <span className="detail-text-review-num">{r.id}</span>
-              <p className="detail-text-review-content">{r.text}</p>
-            </div>
-          ))}
-        </div>
+          )
+        })}
       </section>
-
-      {/* Error report */}
-      <div className="detail-error-report">
-        <span className="detail-error-title">오류 신고</span>
-        <button type="button" className="detail-error-btn">오류 신고하기</button>
-      </div>
-
-      {/* Buy CTA */}
-      <button type="button" className="detail-buy-btn">
-        구매 페이지 바로가기
-      </button>
     </div>
   )
 }

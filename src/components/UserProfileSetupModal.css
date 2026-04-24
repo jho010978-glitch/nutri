@@ -1,45 +1,66 @@
-/* ── 전체 화면 채우기 (phone frame 기준) ─────────────────────── */
+/* ── 전체 모달 (phone frame을 덮음) ─────────────────────── */
 .ups-root {
   position: absolute;
   inset: 0;
-  border-radius: 14px;     /* .mobile-page 와 동일 */
+  border-radius: 14px;
   background: #fff;
   z-index: 200;
   display: flex;
   flex-direction: column;
-  padding: 22px 20px 20px;
-  gap: 0;
+  padding: 22px 22px 24px;
+  overflow-y: auto;
 }
 
-/* ── 닫기 버튼 ────────────────────────────────────────────────── */
-.ups-close {
-  position: absolute;
-  top: 16px;
-  right: 18px;
+/* ── 상단 뒤로가기 ─────────────────────────────────────── */
+.ups-back {
   background: transparent;
   border: 0;
-  font-size: 17px;
-  color: #888;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  line-height: 1;
-  padding: 2px;
+  margin-bottom: 18px;
 }
 
-.ups-close:hover {
-  color: #444;
+.ups-back:hover { opacity: 0.7; }
+
+/* ── 단계 동그라미 ─────────────────────────────────────── */
+.ups-steps {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 22px;
 }
 
-/* ── 제목 ─────────────────────────────────────────────────────── */
-.ups-title {
-  margin: 0 0 28px;
-  font-size: 15px;
+.ups-step {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ececec;
+  color: #888;
+  font-size: 11px;
   font-weight: 700;
-  color: #111;
-  line-height: 1.5;
-  padding-right: 24px;
+  display: grid;
+  place-items: center;
 }
 
-/* ── 본문 (필드들) ────────────────────────────────────────────── */
+.ups-step--on {
+  background: #111;
+  color: #fff;
+}
+
+/* ── 큰 제목 ───────────────────────────────────────────── */
+.ups-title {
+  margin: 0 0 30px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+/* ── 본문 ──────────────────────────────────────────────── */
 .ups-body {
   flex: 1;
   display: flex;
@@ -47,7 +68,13 @@
   gap: 22px;
 }
 
-/* ── 필드 래퍼 ────────────────────────────────────────────────── */
+.ups-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 14px;
+}
+
+/* ── 필드 ──────────────────────────────────────────────── */
 .ups-field {
   display: flex;
   flex-direction: column;
@@ -56,158 +83,239 @@
 
 .ups-field-label {
   font-size: 13px;
-  font-weight: 700;
-  color: #333;
-}
-
-/* ── 숫자 입력 ────────────────────────────────────────────────── */
-.ups-number-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ups-number-input {
-  height: 40px;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
-  padding: 0 12px;
-  font-size: 15px;
   font-weight: 600;
+  color: #666;
+}
+
+.ups-text-input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 14px;
   color: #111;
   background: #fff;
-  text-align: center;
 }
 
-.ups-number-input--compact {
-  width: 88px;
+.ups-text-input::placeholder {
+  color: #b6b6b6;
 }
 
-.ups-number-input--wide {
-  width: 100%;
-  text-align: left;
-}
-
-.ups-number-input:focus-visible {
-  outline: 2px solid #97b6ff;
+.ups-text-input:focus-visible {
+  outline: 2px solid #111;
   outline-offset: 1px;
+  border-color: #111;
 }
 
-/* 숫자 스피너 제거 */
-.ups-number-input::-webkit-inner-spin-button,
-.ups-number-input::-webkit-outer-spin-button {
+/* ── 숫자 입력 ─────────────────────────────────────────── */
+.ups-num-row {
+  position: relative;
+  width: 100%;
+}
+
+.ups-num-input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 0 36px 0 14px;
+  font-size: 14px;
+  color: #111;
+  background: #fff;
+}
+
+.ups-num-input::-webkit-inner-spin-button,
+.ups-num-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.ups-number-input[type='number'] {
+.ups-num-input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.ups-unit {
-  font-size: 14px;
-  color: #555;
-  font-weight: 500;
+.ups-num-input::placeholder {
+  color: #c8c8c8;
 }
 
-/* ── 선택 버튼 그룹 ───────────────────────────────────────────── */
+.ups-num-input:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 1px;
+  border-color: #111;
+}
+
+.ups-unit {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #888;
+  pointer-events: none;
+}
+
+/* ── 성별 버튼 ─────────────────────────────────────────── */
+.ups-gender {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ups-gender-btn {
+  height: 48px;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+
+.ups-gender-btn:hover { border-color: #888; }
+
+.ups-gender-btn.on {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+/* ── 옵션 버튼 그룹 ────────────────────────────────────── */
 .ups-options {
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .ups-opt-btn {
   flex: 1;
-  height: 36px;
-  border: 1px solid #d5d5d5;
+  min-width: 70px;
+  height: 40px;
+  border: 1px solid #e2e2e2;
   background: #fff;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 600;
   color: #555;
   cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  padding: 0 12px;
 }
 
-.ups-opt-btn:hover {
-  border-color: #ffb0b2;
-  color: #ff7f83;
-}
+.ups-opt-btn:hover { border-color: #888; }
 
-.ups-opt-btn--on {
-  background: #ff7f83;
-  border-color: #ff7f83;
+.ups-opt-btn.on {
+  border-color: #111;
+  background: #111;
   color: #fff;
 }
 
-/* ── 보조 힌트 ────────────────────────────────────────────────── */
-.ups-hint {
-  margin: 0;
-  font-size: 12px;
-  color: #999;
-  text-align: center;
+/* ── 필수/선택 힌트 ────────────────────────────────────── */
+.ups-required-hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: #333;
+  font-weight: 600;
+  text-align: right;
 }
 
-/* ── 하단 영역 ────────────────────────────────────────────────── */
-.ups-footer {
+.ups-optional-hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ── 스테퍼 ────────────────────────────────────────────── */
+.ups-stepper {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-top: 20px;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 44px;
 }
 
-/* ── 버튼 행 ──────────────────────────────────────────────────── */
-.ups-btn-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+.ups-stepper-btn {
+  width: 48px;
+  height: 100%;
+  border: 0;
+  background: #f8f8f8;
+  font-size: 20px;
+  font-weight: 400;
+  color: #555;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.ups-btn-row--single {
-  grid-template-columns: 1fr;
+.ups-stepper-btn:hover { background: #f0f0f0; }
+
+.ups-stepper-val {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #888;
 }
 
-.ups-back-btn,
-.ups-next-btn {
-  height: 46px;
-  border-radius: 12px;
+/* ── 드롭다운 ──────────────────────────────────────────── */
+.ups-select-wrap {
+  position: relative;
+}
+
+.ups-select {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 0 36px 0 14px;
   font-size: 14px;
-  font-weight: 700;
+  color: #111;
+  background: #fff;
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
 }
 
-.ups-back-btn {
-  border: 1px solid #d5d5d5;
-  background: #fff;
-  color: #555;
+.ups-select:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 1px;
 }
 
-.ups-back-btn:hover {
-  background: #f6f6f6;
+.ups-select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #888;
+  pointer-events: none;
 }
 
-.ups-next-btn {
-  border: 1px solid #ff7f83;
-  background: #ff7f83;
+/* ── 제출 버튼 ─────────────────────────────────────────── */
+.ups-submit {
+  margin-top: 24px;
+  height: 52px;
+  border-radius: 14px;
+  border: 0;
+  background: #ececec;
+  color: #b6b6b6;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: not-allowed;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ups-submit--on {
+  background: #111;
   color: #fff;
+  cursor: pointer;
 }
 
-.ups-next-btn:hover {
-  background: #ff6468;
-  border-color: #ff6468;
-}
-
-/* ── 진행 바 ──────────────────────────────────────────────────── */
-.ups-progress-bar {
-  height: 4px;
-  background: #eee;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.ups-progress-fill {
-  height: 100%;
-  background: #ff7f83;
-  border-radius: 999px;
-  transition: width 0.3s ease;
+.ups-submit--on:hover {
+  background: #000;
 }
