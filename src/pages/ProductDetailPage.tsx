@@ -1,5 +1,6 @@
 import { useFavorites } from '../contexts/FavoritesContext'
 import { useProductDetailQuery } from '../queries/productQueries'
+import type { NutrientsResponse } from '../api/products/types'
 import type { Product } from '../types/product'
 import './ProductDetailPage.css'
 
@@ -8,17 +9,17 @@ type ProductDetailPageProps = {
   onBack: () => void
 }
 
-const NUTRITION_DEFS = [
-  { key: 'calories',      label: '열량',    unit: 'kcal', max: 2000 },
-  { key: 'sodium',        label: '나트륨',  unit: 'mg',   max: 2000 },
-  { key: 'carbohydrates', label: '탄수화물', unit: 'g',   max: 324  },
-  { key: 'sugars',        label: '당류',    unit: 'g',    max: 100  },
-  { key: 'fat',           label: '지방',    unit: 'g',    max: 54   },
-  { key: 'transFat',      label: '트랜스지방', unit: 'g', max: 2.2  },
-  { key: 'saturatedFat',  label: '포화지방', unit: 'g',   max: 15   },
-  { key: 'cholesterol',   label: '콜레스테롤', unit: 'mg', max: 300 },
-  { key: 'protein',       label: '단백질',  unit: 'g',    max: 55   },
-] as const
+const NUTRITION_DEFS: { key: keyof NutrientsResponse; label: string; unit: string; max: number }[] = [
+  { key: 'calories',      label: '열량',      unit: 'kcal', max: 2000 },
+  { key: 'sodium',        label: '나트륨',    unit: 'mg',   max: 2000 },
+  { key: 'carbohydrate',  label: '탄수화물',  unit: 'g',    max: 324  },
+  { key: 'sugar',         label: '당류',      unit: 'g',    max: 100  },
+  { key: 'fat',           label: '지방',      unit: 'g',    max: 54   },
+  { key: 'transFat',      label: '트랜스지방', unit: 'g',   max: 2.2  },
+  { key: 'saturatedFat',  label: '포화지방',  unit: 'g',    max: 15   },
+  { key: 'cholesterol',   label: '콜레스테롤', unit: 'mg',  max: 300  },
+  { key: 'protein',       label: '단백질',    unit: 'g',    max: 55   },
+]
 
 export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) => {
   const { isFavorite, toggle } = useFavorites()
@@ -63,10 +64,9 @@ export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) =
           </button>
         </div>
         <h1 className="det-name">{product.name}</h1>
-        <p className="det-price">{product.price}</p>
-        <p className="det-per">
-          {detail?.price != null ? `100g당 ${detail.price.toLocaleString('ko-KR')}원` : ''}
-        </p>
+        {detail?.coupang?.price != null && (
+          <p className="det-per">100g당 {detail.coupang.price.toLocaleString('ko-KR')}원</p>
+        )}
       </div>
 
       {/* 영양점수 카드 */}
@@ -74,18 +74,24 @@ export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) =
         <div className="det-score-left">
           <span className="det-score-crown">👑</span>
           <span className="det-score-title">영양점수</span>
-          <p className="det-score-sub">{detail?.categoryName ?? '-'} 카테고리<br />총 400개 제품 중 상위 0.1%</p>
+          <p className="det-score-sub">
+            {detail?.category ?? '-'} 카테고리<br />
+            {detail?.scoreRankPercent != null ? `상위 ${detail.scoreRankPercent}%` : ''}
+          </p>
         </div>
-        <div className="det-score-ring" style={{ background: `conic-gradient(#555 0deg ${(product.score / 100) * 360}deg, #e8e8e8 ${(product.score / 100) * 360}deg 360deg)` }}>
+        <div
+          className="det-score-ring"
+          style={{ background: `conic-gradient(#555 0deg ${(product.nutritionScore / 100) * 360}deg, #e8e8e8 ${(product.nutritionScore / 100) * 360}deg 360deg)` }}
+        >
           <div className="det-score-inner">
-            <span className="det-score-num">{product.score}점</span>
+            <span className="det-score-num">{product.nutritionScore}점</span>
           </div>
         </div>
       </div>
 
       {/* 쿠팡 바로가기 */}
-      {detail?.coupangLink
-        ? <a href={detail.coupangLink} target="_blank" rel="noopener noreferrer" className="det-coupang-btn">쿠팡 바로가기</a>
+      {detail?.coupang?.landingUrl
+        ? <a href={detail.coupang.landingUrl} target="_blank" rel="noopener noreferrer" className="det-coupang-btn">쿠팡 바로가기</a>
         : <button type="button" className="det-coupang-btn" disabled>쿠팡 바로가기</button>
       }
 
@@ -94,8 +100,7 @@ export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) =
       {/* 영양 성분 바 */}
       <section className="det-nutrition" aria-label="영양 성분">
         {NUTRITION_DEFS.map(({ key, label, unit, max }) => {
-          const raw = detail?.[key as keyof typeof detail] as number | undefined
-          const val = raw ?? 0
+          const val = detail?.nutrients?.[key] ?? 0
           const pct = Math.min(100, (val / max) * 100)
           return (
             <div key={key} className="det-nut-row">

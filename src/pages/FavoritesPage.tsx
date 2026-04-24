@@ -11,10 +11,13 @@ type FavoritesPageProps = {
 
 function mapToProduct(p: ProductResponse): Product {
   return {
-    id: p.id, name: p.name, image: p.imageUrl ?? '',
-    price: p.price != null ? `${p.price.toLocaleString('ko-KR')}원` : '-',
-    protein: '-', calories: '-', fat: '-', carbs: '-',
-    grade: p.grade ?? '-', score: p.score ?? 0,
+    id: p.id,
+    name: p.name,
+    brand: p.brand,
+    image: p.imageUrl,
+    nutritionScore: p.nutritionScore,
+    category: p.category,
+    isFavorited: p.isFavorited,
   }
 }
 
@@ -27,8 +30,8 @@ const ArrowLeftIcon = () => (
 export const FavoritesPage = ({ onBack, onProductClick }: FavoritesPageProps) => {
   const { data } = useProductListQuery()
   const { isFavorite, toggle } = useFavorites()
-  const allProducts = data?.content ?? []
-  const favorites = allProducts.filter(p => isFavorite(p.id))
+  const allProducts = data?.items ?? []
+  const favorites = allProducts.filter((p) => isFavorite(p.id))
 
   return (
     <div className="fav-page">
@@ -60,15 +63,13 @@ export const FavoritesPage = ({ onBack, onProductClick }: FavoritesPageProps) =>
                     ? <img className="home-card-img" src={item.imageUrl} alt={item.name} loading="lazy" />
                     : <div className="home-card-img home-card-img--placeholder" />
                   }
-                  <span className="home-card-grade">{item.grade ?? 'A'}</span>
+                  <span className="home-card-grade">{item.nutritionScore}</span>
                 </div>
                 <div className="home-card-bottom">
                   <div className="home-card-text">
                     <p className="home-card-brand">{item.brand ?? '-'}</p>
                     <p className="home-card-name">{item.name}</p>
-                    <p className="home-card-price">
-                      {item.price != null ? `${item.price.toLocaleString('ko-KR')}원` : '-'}
-                    </p>
+                    <p className="home-card-price">{item.category}</p>
                   </div>
                   <button
                     type="button"

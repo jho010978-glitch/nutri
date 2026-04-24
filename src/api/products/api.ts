@@ -1,40 +1,33 @@
 import type {
-  BrandCountResponse,
   PageResponse,
   ProductDetailResponse,
   ProductResponse,
   ProductSearchCondition,
 } from './types'
 
-function buildConditionParams(condition: ProductSearchCondition): URLSearchParams {
-  const params = new URLSearchParams()
-  if (condition.keyword) params.set('keyword', condition.keyword)
-  if (condition.minPrice != null) params.set('minPrice', String(condition.minPrice))
-  if (condition.maxPrice != null) params.set('maxPrice', String(condition.maxPrice))
-  if (condition.minScore != null) params.set('minScore', String(condition.minScore))
-  if (condition.maxScore != null) params.set('maxScore', String(condition.maxScore))
-  if (condition.minCalories != null) params.set('minCalories', String(condition.minCalories))
-  if (condition.maxCalories != null) params.set('maxCalories', String(condition.maxCalories))
-  if (condition.minCarbohydrates != null) params.set('minCarbohydrates', String(condition.minCarbohydrates))
-  if (condition.maxCarbohydrates != null) params.set('maxCarbohydrates', String(condition.maxCarbohydrates))
-  if (condition.minSugars != null) params.set('minSugars', String(condition.minSugars))
-  if (condition.maxSugars != null) params.set('maxSugars', String(condition.maxSugars))
-  if (condition.minProtein != null) params.set('minProtein', String(condition.minProtein))
-  if (condition.maxProtein != null) params.set('maxProtein', String(condition.maxProtein))
-  if (condition.minFat != null) params.set('minFat', String(condition.minFat))
-  if (condition.maxFat != null) params.set('maxFat', String(condition.maxFat))
-  if (condition.minSaturatedFat != null) params.set('minSaturatedFat', String(condition.minSaturatedFat))
-  if (condition.maxSaturatedFat != null) params.set('maxSaturatedFat', String(condition.maxSaturatedFat))
-  if (condition.minTransFat != null) params.set('minTransFat', String(condition.minTransFat))
-  if (condition.maxTransFat != null) params.set('maxTransFat', String(condition.maxTransFat))
-  if (condition.minCholesterol != null) params.set('minCholesterol', String(condition.minCholesterol))
-  if (condition.maxCholesterol != null) params.set('maxCholesterol', String(condition.maxCholesterol))
-  if (condition.minSodium != null) params.set('minSodium', String(condition.minSodium))
-  if (condition.maxSodium != null) params.set('maxSodium', String(condition.maxSodium))
-  condition.categories?.forEach((c) => params.append('categories', c))
-  condition.grades?.forEach((g) => params.append('grades', g))
-  condition.brands?.forEach((b) => params.append('brands', b))
-  return params
+function buildParams(condition: ProductSearchCondition): URLSearchParams {
+  const p = new URLSearchParams()
+  if (condition.keyword)               p.set('keyword',           condition.keyword)
+  if (condition.categoryId != null)    p.set('category_id',       String(condition.categoryId))
+  if (condition.brandId != null)       p.set('brand_id',          String(condition.brandId))
+  if (condition.minCalories != null)   p.set('min_calories',      String(condition.minCalories))
+  if (condition.maxCalories != null)   p.set('max_calories',      String(condition.maxCalories))
+  if (condition.minProtein != null)    p.set('min_protein',       String(condition.minProtein))
+  if (condition.maxProtein != null)    p.set('max_protein',       String(condition.maxProtein))
+  if (condition.minFat != null)        p.set('min_fat',           String(condition.minFat))
+  if (condition.maxFat != null)        p.set('max_fat',           String(condition.maxFat))
+  if (condition.minCarbohydrate != null) p.set('min_carbohydrate', String(condition.minCarbohydrate))
+  if (condition.maxCarbohydrate != null) p.set('max_carbohydrate', String(condition.maxCarbohydrate))
+  if (condition.minSugar != null)      p.set('min_sugar',         String(condition.minSugar))
+  if (condition.maxSugar != null)      p.set('max_sugar',         String(condition.maxSugar))
+  if (condition.minSodium != null)     p.set('min_sodium',        String(condition.minSodium))
+  if (condition.maxSodium != null)     p.set('max_sodium',        String(condition.maxSodium))
+  if (condition.minNutritionScore != null) p.set('min_nutrition_score', String(condition.minNutritionScore))
+  if (condition.maxNutritionScore != null) p.set('max_nutrition_score', String(condition.maxNutritionScore))
+  if (condition.sort)                  p.set('sort',              condition.sort)
+  if (condition.page != null)          p.set('page',              String(condition.page))
+  if (condition.size != null)          p.set('size',              String(condition.size))
+  return p
 }
 
 async function parseResponse<T>(res: Response): Promise<T> {
@@ -46,29 +39,13 @@ async function parseResponse<T>(res: Response): Promise<T> {
 }
 
 export async function searchProducts(
-  condition: ProductSearchCondition,
+  condition: ProductSearchCondition = {},
 ): Promise<PageResponse<ProductResponse>> {
-  const params = buildConditionParams(condition)
-  const res = await fetch(`/api/products?${params}`)
+  const res = await fetch(`/api/products?${buildParams(condition)}`)
   return parseResponse(res)
 }
 
 export async function getProductDetail(id: number): Promise<ProductDetailResponse> {
   const res = await fetch(`/api/products/${id}`)
-  return parseResponse(res)
-}
-
-export async function compareProducts(ids: number[]): Promise<ProductDetailResponse[]> {
-  const params = new URLSearchParams()
-  ids.forEach((id) => params.append('ids', String(id)))
-  const res = await fetch(`/api/products/compare?${params}`)
-  return parseResponse(res)
-}
-
-export async function getBrandCounts(
-  condition: ProductSearchCondition,
-): Promise<BrandCountResponse[]> {
-  const params = buildConditionParams(condition)
-  const res = await fetch(`/api/products/brand-counts?${params}`)
   return parseResponse(res)
 }

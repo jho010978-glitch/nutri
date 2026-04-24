@@ -25,17 +25,17 @@ function mapToProduct(p: ProductResponse): Product {
   return {
     id: p.id,
     name: p.name,
-    image: p.imageUrl ?? '',
-    price: p.price != null ? `${p.price.toLocaleString('ko-KR')}원` : '-',
-    protein: '-', calories: '-', fat: '-', carbs: '-',
-    grade: p.grade ?? '-',
-    score: p.score ?? 0,
+    brand: p.brand,
+    image: p.imageUrl,
+    nutritionScore: p.nutritionScore,
+    category: p.category,
+    isFavorited: p.isFavorited,
   }
 }
 
 export const HomePage = ({ onMoveToFilter, onMoveToMyPage, onProductClick }: HomePageProps) => {
   const { data, isLoading, isError } = useProductListQuery()
-  const products = data?.content ?? []
+  const products = data?.items ?? []
   const [activeCat, setActiveCat] = useState(0)
   const { toggle, isFavorite } = useFavorites()
 
@@ -103,18 +103,13 @@ export const HomePage = ({ onMoveToFilter, onMoveToMyPage, onProductClick }: Hom
                   ? <img className="home-card-img" src={item.imageUrl} alt={item.name} loading="lazy" />
                   : <div className="home-card-img home-card-img--placeholder" />
                 }
-                <span className="home-card-grade">{item.grade ?? 'A'}</span>
+                <span className="home-card-grade">{item.nutritionScore}</span>
               </div>
               <div className="home-card-bottom">
                 <div className="home-card-text">
                   <p className="home-card-brand">{item.brand ?? '-'}</p>
                   <p className="home-card-name">{item.name}</p>
-                  <p className="home-card-price">
-                    {item.price != null ? `${item.price.toLocaleString('ko-KR')}원` : '-'}
-                  </p>
-                  <p className="home-card-per">
-                    {item.price != null ? `100g당 ${item.price.toLocaleString('ko-KR')}원` : ''}
-                  </p>
+                  <p className="home-card-price">{item.category}</p>
                 </div>
                 <button
                   type="button"

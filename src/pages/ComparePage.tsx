@@ -50,25 +50,16 @@ function labelAnchor(i: number): {
   return { textAnchor, dominantBaseline }
 }
 
+// TODO: 비교 기능 구현 시 ProductDetailResponse.nutrients 데이터를 받아 채워야 함 (MVP 제외)
 function productRadarValues(product: Product): number[] {
-  const parseNum = (s: string) => parseFloat(s) || 0
-  // Axes: 영양점수, 칼로리(inv), 탄수화물(inv), 지방(inv), 당(inv), 단백질, 당류(inv)
-  const score = product.score
-  const cal = parseNum(product.calories)     // kcal, lower better
-  const carbs = parseNum(product.carbs)      // g, lower better
-  const fat = parseNum(product.fat)          // g, lower better
-  const sugar = parseNum(product.sugar ?? '0') // g, lower better
-  const protein = parseNum(product.protein)  // g, higher better
-  const sodium = parseNum(product.sodium ?? '300') // mg, lower better
-
   return [
-    score,                                          // 영양점수: higher better
-    Math.max(0, 100 - (cal / 250) * 100),           // 칼로리: 0kcal=100
-    Math.max(0, 100 - (carbs / 25) * 100),          // 탄수화물: 0g=100
-    Math.max(0, 100 - (fat / 15) * 100),            // 지방: 0g=100
-    Math.max(0, 100 - (sugar / 10) * 100),          // 당: 0g=100
-    Math.min(100, (protein / 30) * 100),            // 단백질: 30g=100
-    Math.max(0, 100 - (sodium / 800) * 100),        // 당류: 0mg=100
+    product.nutritionScore,
+    0, // 칼로리
+    0, // 탄수화물
+    0, // 지방
+    0, // 당
+    0, // 단백질
+    0, // 나트륨
   ]
 }
 
@@ -148,17 +139,18 @@ type NutriRow = {
   lowerBetter: boolean
 }
 
+// TODO: 비교 기능 구현 시 ProductDetailResponse.nutrients 데이터를 주입받아 채워야 함
 function buildNutriRows(a: Product, b: Product): NutriRow[] {
   return [
-    { label: '영양점수', a: `${a.score}점`, b: `${b.score}점`, lowerBetter: false },
-    { label: '열량', ref: '2,000 kcal/일', a: a.calories, b: b.calories, lowerBetter: true },
-    { label: '탄수화물', ref: '130 g/일', a: a.carbs, b: b.carbs, lowerBetter: true },
-    { label: '단백질', ref: '55 g/일', a: a.protein, b: b.protein, lowerBetter: false },
-    { label: '지방', ref: '66.7 g', a: a.fat, b: b.fat, lowerBetter: true },
-    { label: '당', ref: '50g', a: a.sugar ?? '-', b: b.sugar ?? '-', lowerBetter: true },
-    { label: '포화지방', ref: '15.6 g', a: a.saturatedFat ?? '-', b: b.saturatedFat ?? '-', lowerBetter: true },
-    { label: '트랜스지방', ref: '2.2 g', a: a.transFat ?? '-', b: b.transFat ?? '-', lowerBetter: true },
-    { label: '콜레스테롤', ref: '300 mg/일', a: a.cholesterol ?? '-', b: b.cholesterol ?? '-', lowerBetter: true },
+    { label: '영양점수', a: `${a.nutritionScore}점`, b: `${b.nutritionScore}점`, lowerBetter: false },
+    { label: '열량',     ref: '2,000 kcal/일', a: '-', b: '-', lowerBetter: true },
+    { label: '탄수화물', ref: '130 g/일',       a: '-', b: '-', lowerBetter: true },
+    { label: '단백질',   ref: '55 g/일',        a: '-', b: '-', lowerBetter: false },
+    { label: '지방',     ref: '66.7 g',         a: '-', b: '-', lowerBetter: true },
+    { label: '당',       ref: '50g',            a: '-', b: '-', lowerBetter: true },
+    { label: '포화지방', ref: '15.6 g',         a: '-', b: '-', lowerBetter: true },
+    { label: '트랜스지방', ref: '2.2 g',        a: '-', b: '-', lowerBetter: true },
+    { label: '콜레스테롤', ref: '300 mg/일',    a: '-', b: '-', lowerBetter: true },
   ]
 }
 
@@ -211,14 +203,14 @@ function CompareCard({
   return (
     <div className="compare-card">
       {/* Score ring badge */}
-      <ScoreRing score={product.score} colorIdx={colorIdx} />
+      <ScoreRing score={product.nutritionScore} colorIdx={colorIdx} />
 
       {/* Product image + name */}
       <div className="compare-card-product-row">
         <img src={product.image} alt={product.name} className="compare-card-img" />
         <div className="compare-card-product-info">
           <p className="compare-card-name">{product.name}</p>
-          <p className="compare-card-price">{product.price}</p>
+          <p className="compare-card-price">{product.category}</p>
         </div>
       </div>
 
@@ -226,7 +218,7 @@ function CompareCard({
       <div className="compare-card-score-box" style={{ borderColor: color }}>
         <span className="compare-card-score-label">종합 점수</span>
         <div className="compare-card-score-value">
-          <span className="compare-card-score-num">{product.score}</span>
+          <span className="compare-card-score-num">{product.nutritionScore}</span>
           <span className="compare-card-score-unit">점</span>
         </div>
       </div>
@@ -284,7 +276,7 @@ export function ComparePage({ products, onBack }: ComparePageProps) {
         </div>
         <div className="compare-featured-info">
           <h3 className="compare-featured-name">{p0.name}</h3>
-          <p className="compare-featured-price">{p0.price}</p>
+          <p className="compare-featured-price">{p0.category}</p>
           <p className="compare-featured-stars">★★★★★</p>
         </div>
       </div>

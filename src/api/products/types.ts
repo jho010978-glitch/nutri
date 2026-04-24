@@ -1,74 +1,98 @@
+// ── 상품 목록 아이템 ─────────────────────────────────────────────
 export type ProductResponse = {
   id: number
   name: string
   brand: string
-  price: number
   imageUrl: string
-  categoryName: string
-  score: number
-  grade: string
-  coupangLink: string
+  nutritionScore: number
+  category: string
+  isFavorited: boolean
 }
 
-export type ProductDetailResponse = ProductResponse & {
+// ── 영양소 (상세) ────────────────────────────────────────────────
+export type NutrientsResponse = {
   servingSize: number
-  servingUnit: string
   calories: number
-  sodium: number
-  carbohydrates: number
-  sugars: number
-  fat: number
-  transFat: number
-  saturatedFat: number
-  cholesterol: number
+  carbohydrate: number
+  sugar: number
   protein: number
+  fat: number
+  saturatedFat: number
+  transFat: number
+  cholesterol: number
+  sodium: number
 }
 
-export type PageResponse<T> = {
-  content: T[]
-  pageNumber: number
-  pageSize: number
-  totalElements: number
-  totalPages: number
-  sort: string
-  last: boolean
+// ── 쿠팡 연동 정보 (상세) ─────────────────────────────────────────
+export type CoupangInfo = {
+  affiliateUrl: string
+  landingUrl: string
+  price: number
+  isRocket: boolean
+  isFreeShipping: boolean
+  lastSyncedAt: string
 }
+
+// ── 상품 상세 ────────────────────────────────────────────────────
+export type ProductDetailResponse = {
+  id: number
+  name: string
+  brand: string
+  imageUrl: string
+  nutritionScore: number
+  category: string
+  nutrients: NutrientsResponse
+  scoreRankPercent: number
+  coupang: CoupangInfo | null
+  isFavorited: boolean
+  viewCount: number
+}
+
+// ── 페이지 응답 래퍼 ─────────────────────────────────────────────
+export type PageResponse<T> = {
+  total: number
+  page: number
+  size: number
+  items: T[]
+}
+
+// ── 검색 조건 ────────────────────────────────────────────────────
+export type SortType = 'POPULAR' | 'SCORE' | 'ACCURACY' | 'RECOMMENDED'
 
 export type ProductSearchCondition = {
   keyword?: string
-  categories?: string[]
-  grades?: string[]
-  brands?: string[]
-  minPrice?: number
-  maxPrice?: number
-  minScore?: number
-  maxScore?: number
+  categoryId?: number
+  brandId?: number
   minCalories?: number
   maxCalories?: number
-  minCarbohydrates?: number
-  maxCarbohydrates?: number
-  minSugars?: number
-  maxSugars?: number
   minProtein?: number
   maxProtein?: number
   minFat?: number
   maxFat?: number
-  minSaturatedFat?: number
-  maxSaturatedFat?: number
-  minTransFat?: number
-  maxTransFat?: number
-  minCholesterol?: number
-  maxCholesterol?: number
+  minCarbohydrate?: number
+  maxCarbohydrate?: number
+  minSugar?: number
+  maxSugar?: number
   minSodium?: number
   maxSodium?: number
+  minNutritionScore?: number
+  maxNutritionScore?: number
+  sort?: SortType
+  page?: number
+  size?: number
 }
 
-export type BrandCountResponse = {
-  brand: string
-  count: number
-}
-
+// ── 카테고리 (트리) ──────────────────────────────────────────────
 export type CategoryResponse = {
-  code: string
+  id: number
   name: string
+  depth: number
+  children?: CategoryResponse[]
+}
+
+// ── 브랜드 ──────────────────────────────────────────────────────
+export type BrandResponse = {
+  id: number
+  name: string
+  productCount: number
 }

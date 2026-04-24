@@ -26,14 +26,11 @@ function mapToProduct(p: ProductResponse): Product {
   return {
     id: p.id,
     name: p.name,
-    image: p.imageUrl ?? '',
-    price: p.price != null ? `${p.price.toLocaleString('ko-KR')}원` : '-',
-    protein: '-',
-    calories: '-',
-    fat: '-',
-    carbs: '-',
-    grade: p.grade ?? '-',
-    score: p.score ?? 0,
+    brand: p.brand,
+    image: p.imageUrl,
+    nutritionScore: p.nutritionScore,
+    category: p.category,
+    isFavorited: p.isFavorited,
   }
 }
 
@@ -58,7 +55,7 @@ export const SearchPage = ({ onBack, onProductClick }: SearchPageProps) => {
 
   const leftRankKeywords = popularKeywords.slice(0, 5)
   const rightRankKeywords = popularKeywords.slice(5, 10)
-  const results = data?.content ?? []
+  const results = data?.items ?? []
 
   return (
     <section className="search-page" aria-label="검색 페이지">
@@ -142,10 +139,7 @@ export const SearchPage = ({ onBack, onProductClick }: SearchPageProps) => {
                       {item.name}
                     </p>
                     <p style={{ fontSize: '0.78rem', color: '#888', margin: '2px 0 0' }}>
-                      {item.brand} · {item.categoryName}
-                    </p>
-                    <p style={{ fontSize: '0.82rem', fontWeight: 500, margin: '2px 0 0' }}>
-                      {item.price != null ? `${item.price.toLocaleString('ko-KR')}원` : '-'}
+                      {item.brand} · {item.category}
                     </p>
                   </div>
                   <span
@@ -159,7 +153,7 @@ export const SearchPage = ({ onBack, onProductClick }: SearchPageProps) => {
                       flexShrink: 0,
                     }}
                   >
-                    {item.grade}
+                    {item.nutritionScore}
                   </span>
                 </div>
               ))}
