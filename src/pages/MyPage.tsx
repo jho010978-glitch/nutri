@@ -9,6 +9,8 @@ type MyPageProps = {
   onGoFavorites: () => void
   onGoPasswordChange: () => void
   onLogout: () => void
+  onEditNutrition: () => void
+  onWithdraw: () => void
 }
 
 const ArrowLeftIcon = () => (
@@ -90,10 +92,36 @@ const LogoutModal = ({ phase, onCancel, onConfirm, onClose }: LogoutModalProps) 
   </div>
 )
 
-export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPasswordChange, onLogout }: MyPageProps) => {
+/* 회원탈퇴 confirm/success 모달 */
+type WithdrawModalProps = LogoutModalProps
+const WithdrawModal = ({ phase, onCancel, onConfirm, onClose }: WithdrawModalProps) => (
+  <div className="mp-modal-overlay">
+    <div className="mp-modal">
+      {phase === 'confirm' ? (
+        <>
+          <p className="mp-modal-msg">정말 회원탈퇴를<br />하시겠습니까?</p>
+          <div className="mp-modal-btns">
+            <button type="button" className="mp-modal-btn mp-modal-btn--cancel" onClick={onCancel}>취소</button>
+            <button type="button" className="mp-modal-btn mp-modal-btn--ok" onClick={onConfirm}>확인</button>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="mp-modal-msg">회원탈퇴가<br />정상적으로 처리되었습니다</p>
+          <div className="mp-modal-btns mp-modal-btns--single">
+            <button type="button" className="mp-modal-btn mp-modal-btn--cancel" onClick={onClose}>닫기</button>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+)
+
+export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPasswordChange, onLogout, onEditNutrition, onWithdraw }: MyPageProps) => {
   const myPageQuery = useMyPageQuery()
   const name = myPageQuery.data?.member.name ?? '영양대학'
   const [logoutPhase, setLogoutPhase] = useState<null | 'confirm' | 'done'>(null)
+  const [withdrawPhase, setWithdrawPhase] = useState<null | 'confirm' | 'done'>(null)
 
   const handleLogoutConfirm = () => {
     setLogoutPhase('done')
@@ -101,6 +129,14 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
   const handleLogoutClose = () => {
     setLogoutPhase(null)
     onLogout()
+  }
+
+  const handleWithdrawConfirm = () => {
+    setWithdrawPhase('done')
+  }
+  const handleWithdrawClose = () => {
+    setWithdrawPhase(null)
+    onWithdraw()
   }
 
   return (
@@ -111,6 +147,14 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
           onCancel={() => setLogoutPhase(null)}
           onConfirm={handleLogoutConfirm}
           onClose={handleLogoutClose}
+        />
+      )}
+      {withdrawPhase && (
+        <WithdrawModal
+          phase={withdrawPhase}
+          onCancel={() => setWithdrawPhase(null)}
+          onConfirm={handleWithdrawConfirm}
+          onClose={handleWithdrawClose}
         />
       )}
 
@@ -151,7 +195,7 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
             <h3 className="mypage-card-title">나의 활동</h3>
             <div className="mypage-row">
               <span className="mypage-row-label">영양정보</span>
-              <button type="button" className="mypage-pill">변경</button>
+              <button type="button" className="mypage-pill" onClick={onEditNutrition}>변경</button>
             </div>
             <button type="button" className="mypage-row mypage-row--btn" onClick={onGoFavorites}>
               <span className="mypage-row-label">즐겨찾기 상품</span>
@@ -167,7 +211,7 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
             <button type="button" className="mypage-row mypage-row--btn" onClick={() => setLogoutPhase('confirm')}>
               <span className="mypage-row-label">로그아웃</span>
             </button>
-            <button type="button" className="mypage-row mypage-row--btn">
+            <button type="button" className="mypage-row mypage-row--btn" onClick={() => setWithdrawPhase('confirm')}>
               <span className="mypage-row-label">회원탈퇴</span>
             </button>
           </section>

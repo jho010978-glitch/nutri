@@ -1,0 +1,62 @@
+const BASE = '/api'
+
+async function tryRefresh(): Promise<string | null> {
+  const refreshToken = localStorage.getItem('refreshToken')
+  if (!refreshToken) return null
+  try {
+    const res = await fetch(`${BASE}/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    })
+    if (!res.ok) return null
+    const json = await res.json()
+    if (!json.isSuccess) return null
+    const newToken = json.data as string
+    localStorage.setItem('accessToken', newToken)
+    return newToken
+  } catch {
+    return null
+  }
+}
+
+export async function apiFetch<T>(
+  path: string,
+  options: RequestInit & { skipAuth?: boolean } = {},
+): Promise<T> {
+  const { skipAuth, ...init } = options
+  const headers = new Headers(init.headers)
+
+  // JSON 바디일 때 Content-Type 자동 설정
+  if (init.body && typeof init.body === 'string' && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json')
+  }
+
+  if (!skipAuth) {
+    const token = localStorage.getItem('accessToken')
+    if (token) headers.set('Authorization', `Bearer ${token}`)
+  }
+
+  let res = await fetch(`${BASE}${path}`, { ...init, headers })
+
+  // 401 → 토큰 갱신 후 재시도
+  if (res.status === 401 && !skipAuth) {
+    const newToken = await tryRefresh()
+    if (newToken) {
+      headers.set('Authorization', `Bearer ${newToken}`)
+      res = await fetch(`${BASE}${path}`, { ...init, headers })
+    } else {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      window.dispatchEvent(new Event('auth:logout'))
+      throw new Error('세션이 만료되었습니다. 다시 로그인해 주세요.')
+    }
+  }
+
+  const text = await res.text()
+  const json = text ? JSON.parse(text) : { isSuccess: true, data: null }
+  if (!res.ok || !json.isSuccess) {
+    throw new Error(json.data?.message ?? `HTTP ${res.status}`)
+  }
+  return json.data as T
+}

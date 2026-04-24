@@ -3,10 +3,10 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   background: #f3f4f6;
   margin: -14px;
-  padding: 14px 14px 24px;
+  padding: 14px 16px 28px;
   border-radius: 14px;
   overflow-y: auto;
 }
@@ -23,8 +23,9 @@
   margin: 0;
   text-align: center;
   font-size: 15px;
-  font-weight: 700;
-  color: #888;
+  font-weight: 600;
+  color: #8a8a8e;
+  letter-spacing: -0.01em;
 }
 
 .mypage-topbar-spacer {
@@ -54,15 +55,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 10px 0 16px;
+  gap: 14px;
+  padding: 14px 0 18px;
 }
 
 .mypage-avatar {
-  width: 88px;
-  height: 88px;
+  width: 108px;
+  height: 108px;
   border-radius: 999px;
-  background: #b9bcc1;
+  background: #a8abb0;
 }
 
 .mypage-name-row {
@@ -75,6 +76,7 @@
   font-size: 16px;
   font-weight: 700;
   color: #111;
+  letter-spacing: -0.01em;
 }
 
 .mypage-name-edit {
@@ -98,17 +100,18 @@
 /* ── 카드 ───────────────────────────────────────── */
 .mypage-card {
   background: #fff;
-  border-radius: 16px;
-  padding: 18px 16px 6px;
+  border-radius: 18px;
+  padding: 20px 18px 10px;
   display: flex;
   flex-direction: column;
 }
 
 .mypage-card-title {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-size: 14px;
   font-weight: 700;
   color: #111;
+  letter-spacing: -0.01em;
 }
 
 /* ── 행 ─────────────────────────────────────────── */
@@ -117,8 +120,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 48px;
-  border-top: 1px solid #f0f0f0;
+  min-height: 52px;
+  border-top: 1px solid #f1f1f2;
   padding: 0 2px;
   background: transparent;
 }
@@ -130,7 +133,7 @@
 
 .mypage-row--btn {
   border: 0;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #f1f1f2;
   text-align: left;
   cursor: pointer;
   font: inherit;
@@ -145,6 +148,7 @@
   font-size: 14px;
   color: #222;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .mypage-row svg {
@@ -154,15 +158,16 @@
 }
 
 .mypage-pill {
-  border: 1px solid #e0e0e0;
-  background: #f5f5f5;
+  border: 1px solid #e3e3e6;
+  background: #f4f4f6;
   border-radius: 999px;
   height: 26px;
   padding: 0 12px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  color: #666;
+  color: #6b6b70;
   cursor: pointer;
+  letter-spacing: -0.01em;
 }
 
 .mypage-pill:hover {
@@ -218,32 +223,34 @@
 .mp-modal-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.42);
   border-radius: 14px;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 28px;
 }
 
 .mp-modal {
   width: 100%;
   background: #fff;
-  border-radius: 18px;
-  padding: 28px 20px 16px;
+  border-radius: 16px;
+  padding: 26px 22px 18px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
 .mp-modal-msg {
   margin: 0;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #111;
-  line-height: 1.5;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
 }
 
 .mp-modal-btns {
@@ -257,25 +264,27 @@
 }
 
 .mp-modal-btn {
-  height: 44px;
+  height: 42px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e3e3e6;
+  letter-spacing: -0.01em;
 }
 
 .mp-modal-btn--cancel {
-  background: #f5f5f5;
-  color: #555;
+  background: #fff;
+  color: #3a3a3f;
 }
 
 .mp-modal-btn--ok {
-  background: #f5f5f5;
-  color: #555;
+  background: #ececee;
+  color: #6a6a6e;
+  border-color: #ececee;
 }
 
-.mp-modal-btn:hover { background: #ebebeb; }
+.mp-modal-btn:hover { filter: brightness(0.97); }
 
 .mypage-icon-btn:focus-visible,
 .mypage-name-edit:focus-visible,

@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 14px 10px;
+  padding: 14px 16px 10px;
 }
 
 .det-icon-btn {
@@ -36,7 +36,7 @@
   background: transparent;
   border: 0;
   font-size: 22px;
-  color: #ccc;
+  color: #d1d1d4;
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -49,8 +49,8 @@
 /* ── 상품 이미지 ────────────────────────────────── */
 .det-img-wrap {
   width: 100%;
-  height: 200px;
-  background: #e8e8e8;
+  height: 300px;
+  background: #dcdcdc;
   overflow: hidden;
 }
 
@@ -68,7 +68,7 @@
 
 /* ── 상품 정보 ─────────────────────────────────── */
 .det-info {
-  padding: 14px 16px 0;
+  padding: 18px 16px 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -82,39 +82,43 @@
 
 .det-brand {
   font-size: 12px;
-  color: #999;
+  color: #8a8a8e;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .det-share svg { width: 20px; height: 20px; }
 
 .det-name {
   margin: 4px 0 0;
-  font-size: 17px;
-  font-weight: 700;
-  color: #111;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f1f22;
   line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .det-price {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   font-size: 18px;
   font-weight: 800;
   color: #111;
+  letter-spacing: -0.02em;
 }
 
 .det-per {
-  margin: 1px 0 0;
-  font-size: 11px;
-  color: #aaa;
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #b0b0b3;
+  letter-spacing: -0.01em;
 }
 
 /* ── 영양점수 카드 ──────────────────────────────── */
 .det-score-card {
-  margin: 14px 16px 0;
-  background: #f8f8f8;
+  margin: 16px 16px 0;
+  background: #f3f4f6;
   border-radius: 14px;
-  padding: 14px 16px;
+  padding: 18px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -124,48 +128,51 @@
 .det-score-left {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 6px;
 }
 
-.det-score-crown { font-size: 16px; }
+.det-score-crown { font-size: 14px; }
 
 .det-score-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #111;
 }
 
 .det-score-sub {
   margin: 0;
-  font-size: 11px;
-  color: #888;
+  font-size: 12px;
+  color: #7d7d83;
   line-height: 1.5;
 }
 
 .det-score-ring {
   flex-shrink: 0;
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 999px;
+  border: 3px solid #c9ccd1;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .det-score-inner {
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  height: 100%;
   border-radius: 999px;
-  background: #f8f8f8;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .det-score-num {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   color: #111;
+  letter-spacing: -0.02em;
 }
 
 /* ── 쿠팡 버튼 ─────────────────────────────────── */
@@ -173,15 +180,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 14px 16px 0;
+  margin: 16px 16px 0;
   width: calc(100% - 32px);
-  height: 50px;
-  background: #4a4f5c;
+  height: 52px;
+  background: #4a5060;
   color: #fff;
   border: 0;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   cursor: pointer;
   text-decoration: none;
 }
@@ -192,41 +200,46 @@
 }
 
 .det-divider {
-  height: 8px;
-  background: #f0f0f0;
-  margin: 16px 0 0;
+  height: 20px;
+  background: transparent;
+  margin: 0;
 }
 
-/* ── 영양 성분 바 ───────────────────────────────── */
+/* ── 영양 성분 바 (흰 카드 래퍼) ───────────────────── */
 .det-nutrition {
-  padding: 16px 16px 24px;
+  margin: 0 16px 24px;
+  padding: 20px 18px;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .det-nut-row {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .det-nut-label {
   font-size: 13px;
   font-weight: 600;
-  color: #222;
+  color: #2a2a2a;
+  letter-spacing: -0.01em;
 }
 
 .det-nut-bar-wrap {
   height: 6px;
-  background: #e8e8e8;
+  background: #ececec;
   border-radius: 999px;
   overflow: hidden;
 }
 
 .det-nut-bar {
   height: 100%;
-  background: #666;
+  background: #6e737c;
   border-radius: 999px;
 }
 
@@ -234,5 +247,6 @@
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: #aaa;
+  color: #a6a6ac;
+  font-weight: 500;
 }

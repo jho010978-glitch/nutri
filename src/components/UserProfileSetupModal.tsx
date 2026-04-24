@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './UserProfileSetupModal.css'
 
-type Profile = {
+export type Profile = {
   name: string
   email: string
   gender: 'male' | 'female' | ''
@@ -21,6 +21,8 @@ type Profile = {
 type Props = {
   onClose: () => void
   onComplete: (profile: Profile) => void
+  initialProfile?: Profile
+  submitLabel?: string
 }
 
 const DIET_GOALS = ['다이어트', '벌크업', '린매스업', '건강한식생활', '기타']
@@ -33,9 +35,9 @@ const initial: Profile = {
   mealsPerDay: 3, snacksPerDay: 1, dietGoal: '',
 }
 
-export const UserProfileSetupModal = ({ onClose, onComplete }: Props) => {
+export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, submitLabel }: Props) => {
   const [step, setStep] = useState(1)
-  const [profile, setProfile] = useState<Profile>(initial)
+  const [profile, setProfile] = useState<Profile>(initialProfile ?? initial)
 
   const set = <K extends keyof Profile>(k: K) => (v: Profile[K]) =>
     setProfile(p => ({ ...p, [k]: v }))
@@ -149,7 +151,7 @@ export const UserProfileSetupModal = ({ onClose, onComplete }: Props) => {
         onClick={handleNext}
         disabled={!valid}
       >
-        {step === TOTAL_STEPS ? '완료하기' : '다음'}
+        {step === TOTAL_STEPS ? (submitLabel ?? '완료하기') : '다음'}
       </button>
     </div>
   )

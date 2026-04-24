@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { FavoritesProvider } from './contexts/FavoritesContext'
-import { UserProfileSetupModal } from './components/UserProfileSetupModal'
+import { UserProfileSetupModal, type Profile } from './components/UserProfileSetupModal'
 import { products as allProducts } from './mocks/products'
 import { AdminPage } from './pages/AdminPage'
 import { ComparePage } from './pages/ComparePage'
@@ -36,6 +36,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const [showProfileSetup, setShowProfileSetup] = useState(false)
+  const [showNutritionEdit, setShowNutritionEdit] = useState(false)
+  const [userProfile, setUserProfile] = useState<Profile | null>(null)
   const [showFilter, setShowFilter] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [compareProducts, setCompareProducts] = useState<Product[]>([])
@@ -59,6 +61,13 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false)
     setIsAdmin(false)
+    navigate('home')
+  }
+
+  const handleWithdraw = () => {
+    setIsAuthenticated(false)
+    setIsAdmin(false)
+    setUserProfile(null)
     navigate('home')
   }
 
@@ -105,6 +114,8 @@ function App() {
             onGoFavorites={() => navigate('favorites')}
             onGoPasswordChange={() => navigate('password-change')}
             onLogout={handleLogout}
+            onEditNutrition={() => setShowNutritionEdit(true)}
+            onWithdraw={handleWithdraw}
           />
         )
       case 'login':
@@ -160,7 +171,21 @@ function App() {
           {showProfileSetup && (
             <UserProfileSetupModal
               onClose={() => setShowProfileSetup(false)}
-              onComplete={() => setShowProfileSetup(false)}
+              onComplete={(profile) => {
+                setUserProfile(profile)
+                setShowProfileSetup(false)
+              }}
+            />
+          )}
+          {showNutritionEdit && (
+            <UserProfileSetupModal
+              initialProfile={userProfile ?? undefined}
+              submitLabel="저장하기"
+              onClose={() => setShowNutritionEdit(false)}
+              onComplete={(profile) => {
+                setUserProfile(profile)
+                setShowNutritionEdit(false)
+              }}
             />
           )}
           {showFilter && (

@@ -663,17 +663,19 @@
 
 .home-search input {
   width: 100%;
-  height: 40px;
-  border: 1px solid #e0e0e0;
+  height: 44px;
+  border: 1px solid #e5e5e8;
   border-radius: 999px;
   background: #fff;
-  padding: 0 16px 0 38px;
+  padding: 0 18px 0 42px;
   font-size: 13px;
   color: #333;
+  letter-spacing: -0.01em;
 }
 
 .home-search input::placeholder {
   color: #b6b6b6;
+  font-weight: 400;
 }
 
 .home-search input:focus-visible {
@@ -732,8 +734,8 @@
   width: 64px;
   height: 64px;
   border-radius: 16px;
-  background: #f3f3f3;
-  border: 1px solid #ececec;
+  background: #f1f2f4;
+  border: 1px solid transparent;
   display: grid;
   place-items: center;
   font-size: 32px;
@@ -741,13 +743,20 @@
 }
 
 .home-cat--on .home-cat-emoji {
-  border-color: #111;
+  border-color: #c9cbd0;
+  background: #fafbfc;
 }
 
 .home-cat-label {
   font-size: 12px;
-  font-weight: 600;
-  color: #444;
+  font-weight: 500;
+  color: #3a3a3f;
+  letter-spacing: -0.01em;
+}
+
+.home-cat--on .home-cat-label {
+  font-weight: 700;
+  color: #111;
 }
 
 .home-chips {
@@ -758,10 +767,10 @@
 }
 
 .home-chip-icon {
-  width: 32px;
+  width: 34px;
   height: 30px;
   border-radius: 999px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e3e3e6;
   background: #fff;
   display: grid;
   place-items: center;
@@ -778,13 +787,14 @@
 .home-chip {
   height: 30px;
   border-radius: 999px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e3e3e6;
   background: #fff;
-  padding: 0 12px;
+  padding: 0 14px;
   font-size: 12px;
-  font-weight: 600;
-  color: #444;
+  font-weight: 500;
+  color: #3a3a3f;
   cursor: pointer;
+  letter-spacing: -0.01em;
 }
 
 .home-chip:hover,
@@ -817,10 +827,10 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 14px;
-  background: #f0f0f0;
+  border-radius: 12px;
+  background: #ededed;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .home-card-img {
@@ -835,33 +845,36 @@
 
 .home-card-grade {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  min-width: 32px;
-  height: 24px;
-  padding: 0 8px;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
   border-radius: 999px;
-  background: #2a2a2a;
+  background: #2b2b2e;
   color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   display: grid;
   place-items: center;
+  letter-spacing: -0.01em;
 }
 
 .home-card-brand {
   margin: 0;
   font-size: 11px;
-  color: #888;
+  color: #8a8a8e;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .home-card-name {
   margin: 0;
   font-size: 13px;
-  color: #222;
+  color: #1f1f22;
   font-weight: 500;
   line-height: 1.3;
+  letter-spacing: -0.01em;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -869,17 +882,19 @@
 }
 
 .home-card-price {
-  margin: 2px 0 0;
+  margin: 3px 0 0;
   font-size: 15px;
   color: #111;
   font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .home-card-per {
-  margin: 0;
+  margin: 1px 0 0;
   font-size: 11px;
-  color: #aaa;
+  color: #b0b0b3;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .home-card-bottom {
