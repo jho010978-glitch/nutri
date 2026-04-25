@@ -1,24 +1,11 @@
 import { useFavorites } from '../contexts/FavoritesContext'
-import { useProductListQuery } from '../queries/productQueries'
-import type { ProductResponse } from '../api/products/types'
+import { useLikesQuery } from '../queries/likesQueries'
 import type { Product } from '../types/product'
 import './FavoritesPage.css'
 
 type FavoritesPageProps = {
   onBack: () => void
   onProductClick?: (product: Product) => void
-}
-
-function mapToProduct(p: ProductResponse): Product {
-  return {
-    id: p.id,
-    name: p.name,
-    brand: p.brand,
-    image: p.imageUrl,
-    nutritionScore: p.nutritionScore,
-    category: p.category,
-    isFavorited: p.isFavorited,
-  }
 }
 
 const ArrowLeftIcon = () => (
@@ -28,10 +15,9 @@ const ArrowLeftIcon = () => (
 )
 
 export const FavoritesPage = ({ onBack, onProductClick }: FavoritesPageProps) => {
-  const { data } = useProductListQuery()
-  const { isFavorite, toggle } = useFavorites()
-  const allProducts = data?.items ?? []
-  const favorites = allProducts.filter((p) => isFavorite(p.id))
+  const { toggle } = useFavorites()
+  const { data, isLoading } = useLikesQuery(true)
+  const items = data?.items ?? []
 
   return (
     <div className="fav-page">
@@ -40,42 +26,51 @@ export const FavoritesPage = ({ onBack, onProductClick }: FavoritesPageProps) =>
           <ArrowLeftIcon />
         </button>
         <h2 className="fav-title">즐겨찾기</h2>
-        <button type="button" className="fav-icon-btn" aria-label="검색">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M10 2a8 8 0 1 1-5.3 14L1 19.7 2.3 21l3.7-3.7A8 8 0 0 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z" fill="#111"/>
-          </svg>
-        </button>
+        <div className="fav-icon-btn" aria-hidden="true" />
       </header>
 
-      {favorites.length === 0 ? (
+      {isLoading && (
+        <p style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>불러오는 중...</p>
+      )}
+
+      {!isLoading && items.length === 0 && (
         <div className="fav-empty">
           <p>즐겨찾기한 상품이 없어요</p>
           <p className="fav-empty-sub">상품 카드의 ♡를 눌러 저장해 보세요</p>
         </div>
-      ) : (
+      )}
+
+      {items.length > 0 && (
         <section className="fav-grid" aria-label="즐겨찾기 상품">
-          {favorites.map(item => {
-            const product = mapToProduct(item)
+          {items.map(item => {
+            const product: Product = {
+              id: item.product_id,
+              name: item.name,
+              brand: item.brand,
+              image: item.image_url,
+              nutritionScore: item.nutrition_score,
+              category: { id: 0, name: '' },
+              favorited: true,
+            }
             return (
-              <article key={item.id} className="home-card" onClick={() => onProductClick?.(product)}>
+              <article key={item.product_id} className="home-card" onClick={() => onProductClick?.(product)}>
                 <div className="home-card-img-wrap">
-                  {item.imageUrl
-                    ? <img className="home-card-img" src={item.imageUrl} alt={item.name} loading="lazy" />
+                  {item.image_url
+                    ? <img className="home-card-img" src={item.image_url} alt={item.name} loading="lazy" />
                     : <div className="home-card-img home-card-img--placeholder" />
                   }
-                  <span className="home-card-grade">{item.nutritionScore}</span>
+                  <span className="home-card-grade">{item.nutrition_score}</span>
                 </div>
                 <div className="home-card-bottom">
                   <div className="home-card-text">
-                    <p className="home-card-brand">{item.brand ?? '-'}</p>
+                    <p className="home-card-brand">{item.brand?.name ?? '-'}</p>
                     <p className="home-card-name">{item.name}</p>
-                    <p className="home-card-price">{item.category}</p>
                   </div>
                   <button
                     type="button"
                     className="home-card-heart on"
                     aria-label="즐겨찾기 해제"
-                    onClick={e => { e.stopPropagation(); toggle(item.id) }}
+                    onClick={e => { e.stopPropagation(); toggle(item.product_id) }}
                   >♥</button>
                 </div>
               </article>

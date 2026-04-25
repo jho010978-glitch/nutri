@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { FavoritesProvider } from './contexts/FavoritesContext'
+import { useLikesQuery } from './queries/likesQueries'
 import { UserProfileSetupModal, type Profile } from './components/UserProfileSetupModal'
+import { postNutrition, putNutrition, type NutritionData } from './api/nutrition'
+import { oauthLogin, register } from './api/auth'
 import { products as allProducts } from './mocks/products'
 import { AdminPage } from './pages/AdminPage'
 import { ComparePage } from './pages/ComparePage'
@@ -14,6 +17,21 @@ import { MyPage } from './pages/MyPage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
 import { SearchPage } from './pages/SearchPage'
 import type { Product } from './types/product'
+
+function profileToNutrition(p: Profile): NutritionData {
+  return {
+    height: Number(p.height),
+    weight: Number(p.weight),
+    body_fat_rate: p.body_fat_rate ? Number(p.body_fat_rate) : undefined,
+    skeletal_muscle_mass: p.skeletal_muscle_mass ? Number(p.skeletal_muscle_mass) : undefined,
+    diet_purpose: p.diet_purpose,
+    activity_type: p.activity_type,
+    weekly_exercise_count: Number(p.weekly_exercise_count) || 0,
+    exercise_intensity: p.exercise_intensity,
+    daily_meal_count: p.daily_meal_count,
+    daily_snack_count: p.daily_snack_count,
+  }
+}
 
 type RouteKey =
   | 'home' | 'search' | 'mypage' | 'login' | 'admin'
@@ -31,7 +49,7 @@ const getRouteFromHash = (): RouteKey => {
 
 const setHashRoute = (route: RouteKey) => { window.location.hash = route }
 
-function App() {
+function AppShell() {
   const [route, setRoute] = useState<RouteKey>(() => getRouteFromHash())
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -41,6 +59,40 @@ function App() {
   const [showFilter, setShowFilter] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [compareProducts, setCompareProducts] = useState<Product[]>([])
+  // 신규 OAuth 회원가입 진행 중일 때 임시 보관 (provider, oauthId, email)
+  const [oauthPending, setOauthPending] = useState<{ provider: string; oauthId: string; email?: string } | null>(null)
+
+  // 로그인 상태일 때 찜 목록을 서버에서 로드해 FavoritesContext 동기화
+  useLikesQuery(isAuthenticated)
+
+  // OAuth 콜백: URL ?code=xxx&provider=PROVIDER 감지 → /auth/oauth 호출
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('code')
+    const provider = params.get('provider')
+    if (!code || !provider) return
+
+    // 콜백 파라미터를 URL에서 제거
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash)
+
+    oauthLogin(provider, code).then((res) => {
+      if (res.newUser) {
+        // 신규 회원: 회원가입 모달 표시
+        setOauthPending({ provider, oauthId: res.oauthId ?? '', email: res.email })
+        setShowProfileSetup(true)
+        navigate('home')
+      } else {
+        // 기존 회원: 토큰 저장 후 로그인 완료
+        if (res.accessToken) localStorage.setItem('accessToken', res.accessToken)
+        if (res.refreshToken) localStorage.setItem('refreshToken', res.refreshToken)
+        setIsAuthenticated(true)
+        navigate('home')
+      }
+    }).catch(() => {
+      navigate('login')
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const handleHashChange = () => setRoute(getRouteFromHash())
@@ -165,15 +217,38 @@ function App() {
   }, [route, isAuthenticated, isAdmin, selectedProduct, compareProducts])
 
   return (
-    <FavoritesProvider>
-      <main className="screen-wrap">
-        <section className="mobile-page app-shell">
+    <main className="screen-wrap">
+      <section className="mobile-page app-shell">
           {showProfileSetup && (
             <UserProfileSetupModal
-              onClose={() => setShowProfileSetup(false)}
-              onComplete={(profile) => {
+              initialProfile={oauthPending?.email
+                ? { ...{ name: '', email: oauthPending.email, gender: '', birth_date: '', height: '', weight: '', body_fat_rate: '', skeletal_muscle_mass: '', activity_type: '', weekly_exercise_count: '', exercise_intensity: '', daily_meal_count: 3, daily_snack_count: 1, diet_purpose: '' } }
+                : undefined
+              }
+              onClose={() => { setShowProfileSetup(false); setOauthPending(null) }}
+              onComplete={async (profile) => {
                 setUserProfile(profile)
                 setShowProfileSetup(false)
+                try {
+                  if (oauthPending) {
+                    // 신규 OAuth 회원: register → nutrition 순서로 호출
+                    await register({
+                      provider: oauthPending.provider,
+                      oauth_id: oauthPending.oauthId,
+                      name: profile.name,
+                      email: profile.email,
+                      gender: profile.gender,
+                      birth_date: profile.birth_date,
+                    })
+                    setOauthPending(null)
+                    setIsAuthenticated(true)
+                    await postNutrition(profileToNutrition(profile))
+                  } else {
+                    await postNutrition(profileToNutrition(profile))
+                  }
+                } catch {
+                  // 실패해도 로그인 흐름을 막지 않음
+                }
               }}
             />
           )}
@@ -182,9 +257,14 @@ function App() {
               initialProfile={userProfile ?? undefined}
               submitLabel="저장하기"
               onClose={() => setShowNutritionEdit(false)}
-              onComplete={(profile) => {
+              onComplete={async (profile) => {
                 setUserProfile(profile)
                 setShowNutritionEdit(false)
+                try {
+                  await putNutrition(profileToNutrition(profile))
+                } catch {
+                  // 수정 실패 무시 (추후 에러 토스트 추가 가능)
+                }
               }}
             />
           )}
@@ -194,6 +274,13 @@ function App() {
           <section className="page-body">{currentPage}</section>
         </section>
       </main>
+  )
+}
+
+function App() {
+  return (
+    <FavoritesProvider>
+      <AppShell />
     </FavoritesProvider>
   )
 }

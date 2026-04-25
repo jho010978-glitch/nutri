@@ -1,16 +1,12 @@
-﻿import type { MyPageData } from '../types/mypage'
-import productImage from '../assets/images/product.png'
+import type { MyPageData } from '../types/mypage'
 
 export const mockMyPageData: MyPageData = {
   member: {
+    id: 1,
+    email: 'test@example.com',
     name: '홍길동',
-    birthDate: '2000.03.12',
-    phone: '010-1234-5678',
+    nickname: '길동',
+    gender: 'MALE',
+    birth_date: '2000-03-12',
   },
-  savedProducts: [
-    { id: 'saved-1', name: '찜 상품 1', imageUrl: productImage },
-    { id: 'saved-2', name: '찜 상품 2', imageUrl: productImage },
-    { id: 'saved-3', name: '찜 상품 3', imageUrl: productImage },
-    { id: 'saved-4', name: '찜 상품 4', imageUrl: productImage },
-  ],
 }

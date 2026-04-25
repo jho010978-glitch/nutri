@@ -55,7 +55,7 @@ export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) =
       {/* 상품 정보 */}
       <div className="det-info">
         <div className="det-info-top">
-          <span className="det-brand">{detail?.brand ?? '-'}</span>
+          <span className="det-brand">{detail?.brand?.name ?? '-'}</span>
           <button type="button" className="det-icon-btn det-share" aria-label="공유">
             <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
@@ -75,7 +75,7 @@ export const ProductDetailPage = ({ product, onBack }: ProductDetailPageProps) =
           <span className="det-score-crown">👑</span>
           <span className="det-score-title">영양점수</span>
           <p className="det-score-sub">
-            {detail?.category ?? '-'} 카테고리<br />
+            {detail?.category?.name ?? '-'} 카테고리<br />
             {detail?.scoreRankPercent != null ? `상위 ${detail.scoreRankPercent}%` : ''}
           </p>
         </div>

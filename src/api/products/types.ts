@@ -1,12 +1,16 @@
+// ── 공통 참조 타입 ───────────────────────────────────────────────
+export type BrandRef = { id: number; name: string }
+export type CategoryRef = { id: number; name: string }
+
 // ── 상품 목록 아이템 ─────────────────────────────────────────────
 export type ProductResponse = {
   id: number
   name: string
-  brand: string
+  brand: BrandRef
   imageUrl: string
   nutritionScore: number
-  category: string
-  isFavorited: boolean
+  category: CategoryRef
+  favorited: boolean
 }
 
 // ── 영양소 (상세) ────────────────────────────────────────────────
@@ -37,14 +41,14 @@ export type CoupangInfo = {
 export type ProductDetailResponse = {
   id: number
   name: string
-  brand: string
+  brand: BrandRef
   imageUrl: string
   nutritionScore: number
-  category: string
+  category: CategoryRef
   nutrients: NutrientsResponse
   scoreRankPercent: number
   coupang: CoupangInfo | null
-  isFavorited: boolean
+  favorited: boolean
   viewCount: number
 }
 

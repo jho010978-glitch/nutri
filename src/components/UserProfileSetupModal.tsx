@@ -2,20 +2,22 @@ import { useState } from 'react'
 import './UserProfileSetupModal.css'
 
 export type Profile = {
+  // step 1 — /auth/register
   name: string
   email: string
-  gender: 'male' | 'female' | ''
-  birthDate: string
+  gender: 'MALE' | 'FEMALE' | ''
+  birth_date: string
+  // step 2-4 — /users/me/nutrition
   height: string
   weight: string
-  bodyFatPct: string
-  skeletalMuscle: string
-  jobType: string
-  exerciseFreq: string
-  exerciseIntensity: string
-  mealsPerDay: number
-  snacksPerDay: number
-  dietGoal: string
+  body_fat_rate: string
+  skeletal_muscle_mass: string
+  activity_type: string
+  weekly_exercise_count: string
+  exercise_intensity: string
+  daily_meal_count: number
+  daily_snack_count: number
+  diet_purpose: string
 }
 
 type Props = {
@@ -29,10 +31,10 @@ const DIET_GOALS = ['다이어트', '벌크업', '린매스업', '건강한식�
 const TOTAL_STEPS = 4
 
 const initial: Profile = {
-  name: '', email: '', gender: '', birthDate: '',
-  height: '', weight: '', bodyFatPct: '', skeletalMuscle: '',
-  jobType: '', exerciseFreq: '', exerciseIntensity: '',
-  mealsPerDay: 3, snacksPerDay: 1, dietGoal: '',
+  name: '', email: '', gender: '', birth_date: '',
+  height: '', weight: '', body_fat_rate: '', skeletal_muscle_mass: '',
+  activity_type: '', weekly_exercise_count: '', exercise_intensity: '',
+  daily_meal_count: 3, daily_snack_count: 1, diet_purpose: '',
 }
 
 export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, submitLabel }: Props) => {
@@ -43,10 +45,10 @@ export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, sub
     setProfile(p => ({ ...p, [k]: v }))
 
   const isStepValid = (): boolean => {
-    if (step === 1) return !!(profile.name && profile.email && profile.gender && profile.birthDate)
+    if (step === 1) return !!(profile.name && profile.email && profile.gender && profile.birth_date)
     if (step === 2) return !!(profile.height && profile.weight)
-    if (step === 3) return !!(profile.jobType && profile.exerciseFreq && profile.exerciseIntensity)
-    if (step === 4) return !!(profile.dietGoal)
+    if (step === 3) return !!(profile.activity_type && profile.weekly_exercise_count && profile.exercise_intensity)
+    if (step === 4) return !!(profile.diet_purpose)
     return false
   }
 
@@ -89,13 +91,13 @@ export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, sub
             <div className="ups-field">
               <span className="ups-field-label">성별</span>
               <div className="ups-gender">
-                <button type="button" className={`ups-gender-btn${profile.gender === 'male' ? ' on' : ''}`} onClick={() => set('gender')('male')}>남성</button>
-                <button type="button" className={`ups-gender-btn${profile.gender === 'female' ? ' on' : ''}`} onClick={() => set('gender')('female')}>여성</button>
+                <button type="button" className={`ups-gender-btn${profile.gender === 'MALE' ? ' on' : ''}`} onClick={() => set('gender')('MALE')}>남성</button>
+                <button type="button" className={`ups-gender-btn${profile.gender === 'FEMALE' ? ' on' : ''}`} onClick={() => set('gender')('FEMALE')}>여성</button>
               </div>
             </div>
             <div className="ups-field">
               <span className="ups-field-label">생년월일</span>
-              <input className="ups-text-input" type="date" placeholder="생년월일" value={profile.birthDate} onChange={e => set('birthDate')(e.target.value)} />
+              <input className="ups-text-input" type="date" placeholder="생년월일" value={profile.birth_date} onChange={e => set('birth_date')(e.target.value)} />
             </div>
           </>
         )}
@@ -108,8 +110,8 @@ export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, sub
             </div>
             <p className="ups-required-hint">*필수</p>
             <div className="ups-grid-2" style={{ marginTop: 4 }}>
-              <NumberField label="체지방률" unit="%" value={profile.bodyFatPct} onChange={set('bodyFatPct')} />
-              <NumberField label="골격근량" unit="kg" value={profile.skeletalMuscle} onChange={set('skeletalMuscle')} />
+              <NumberField label="체지방률" unit="%" value={profile.body_fat_rate} onChange={set('body_fat_rate')} />
+              <NumberField label="골격근량" unit="kg" value={profile.skeletal_muscle_mass} onChange={set('skeletal_muscle_mass')} />
             </div>
             <p className="ups-optional-hint">*선택</p>
           </>
@@ -117,23 +119,23 @@ export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, sub
 
         {step === 3 && (
           <>
-            <OptionGroup label="직업 형태" options={['앉아서', '서서', '육체노동']} value={profile.jobType} onChange={set('jobType')} />
-            <OptionGroup label="운동 빈도" options={['주 1회', '주 2~4회', '주 5회 이상']} value={profile.exerciseFreq} onChange={set('exerciseFreq')} />
-            <OptionGroup label="운동 강도" options={['약하게', '중간', '강하게']} value={profile.exerciseIntensity} onChange={set('exerciseIntensity')} />
+            <OptionGroup label="활동 유형" options={['SEDENTARY', 'LIGHTLY_ACTIVE', 'MODERATELY_ACTIVE', 'VERY_ACTIVE']} value={profile.activity_type} onChange={set('activity_type')} />
+            <OptionGroup label="주간 운동 횟수" options={['1', '2', '3', '4', '5', '6', '7']} value={profile.weekly_exercise_count} onChange={set('weekly_exercise_count')} />
+            <OptionGroup label="운동 강도" options={['LOW', 'MEDIUM', 'HIGH']} value={profile.exercise_intensity} onChange={set('exercise_intensity')} />
           </>
         )}
 
         {step === 4 && (
           <>
-            <StepperField label="하루 끼니 수" value={profile.mealsPerDay} min={1} max={10} onChange={v => set('mealsPerDay')(v)} />
-            <StepperField label="간식 횟수" value={profile.snacksPerDay} min={0} max={10} onChange={v => set('snacksPerDay')(v)} />
+            <StepperField label="하루 끼니 수" value={profile.daily_meal_count} min={1} max={10} onChange={v => set('daily_meal_count')(v)} />
+            <StepperField label="간식 횟수" value={profile.daily_snack_count} min={0} max={10} onChange={v => set('daily_snack_count')(v)} />
             <div className="ups-field">
               <span className="ups-field-label">식이 목적</span>
               <div className="ups-select-wrap">
                 <select
                   className="ups-select"
-                  value={profile.dietGoal}
-                  onChange={e => set('dietGoal')(e.target.value)}
+                  value={profile.diet_purpose}
+                  onChange={e => set('diet_purpose')(e.target.value)}
                 >
                   <option value="" disabled>선택해 주세요</option>
                   {DIET_GOALS.map(g => <option key={g} value={g}>{g}</option>)}

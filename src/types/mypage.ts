@@ -1,16 +1,12 @@
-﻿export type MyMemberProfile = {
+export type MyMemberProfile = {
+  id: number
+  email: string
   name: string
-  birthDate: string
-  phone: string
-}
-
-export type SavedProduct = {
-  id: string
-  name: string
-  imageUrl: string
+  nickname: string
+  gender: 'MALE' | 'FEMALE' | string
+  birth_date: string
 }
 
 export type MyPageData = {
   member: MyMemberProfile
-  savedProducts: SavedProduct[]
 }

@@ -1,13 +1,13 @@
-﻿import { useQuery } from '@tanstack/react-query'
-import { myPageDataProvider } from '../api/mypage/client'
+import { useQuery } from '@tanstack/react-query'
+import { getMe } from '../api/mypage/client'
 
-const myPageKeys = {
-  all: ['my-page'] as const,
-  profile: () => [...myPageKeys.all, 'profile'] as const,
+export const myPageKeys = {
+  me: ['users', 'me'] as const,
 }
 
-export const useMyPageQuery = () =>
+export const useMyPageQuery = (enabled = true) =>
   useQuery({
-    queryKey: myPageKeys.profile(),
-    queryFn: () => myPageDataProvider.getMyPage(),
+    queryKey: myPageKeys.me,
+    queryFn: getMe,
+    enabled,
   })

@@ -29,7 +29,7 @@ function mapToProduct(p: ProductResponse): Product {
     image: p.imageUrl,
     nutritionScore: p.nutritionScore,
     category: p.category,
-    isFavorited: p.isFavorited,
+    favorited: p.favorited,
   }
 }
 
@@ -107,9 +107,9 @@ export const HomePage = ({ onMoveToFilter, onMoveToMyPage, onProductClick }: Hom
               </div>
               <div className="home-card-bottom">
                 <div className="home-card-text">
-                  <p className="home-card-brand">{item.brand ?? '-'}</p>
+                  <p className="home-card-brand">{item.brand?.name ?? '-'}</p>
                   <p className="home-card-name">{item.name}</p>
-                  <p className="home-card-price">{item.category}</p>
+                  <p className="home-card-price">{item.category?.name ?? '-'}</p>
                 </div>
                 <button
                   type="button"

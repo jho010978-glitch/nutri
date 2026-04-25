@@ -30,7 +30,7 @@ function mapToProduct(p: ProductResponse): Product {
     image: p.imageUrl,
     nutritionScore: p.nutritionScore,
     category: p.category,
-    isFavorited: p.isFavorited,
+    favorited: p.favorited,
   }
 }
 
@@ -139,7 +139,7 @@ export const SearchPage = ({ onBack, onProductClick }: SearchPageProps) => {
                       {item.name}
                     </p>
                     <p style={{ fontSize: '0.78rem', color: '#888', margin: '2px 0 0' }}>
-                      {item.brand} · {item.category}
+                      {item.brand?.name ?? '-'} · {item.category?.name ?? '-'}
                     </p>
                   </div>
                   <span

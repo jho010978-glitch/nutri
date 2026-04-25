@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMyPageQuery } from '../queries/myPageQueries'
+import { logout as apiLogout, withdraw as apiWithdraw } from '../api/auth'
 import './MyPage.css'
 
 type MyPageProps = {
@@ -93,13 +94,28 @@ const LogoutModal = ({ phase, onCancel, onConfirm, onClose }: LogoutModalProps) 
 )
 
 /* 회원탈퇴 confirm/success 모달 */
-type WithdrawModalProps = LogoutModalProps
-const WithdrawModal = ({ phase, onCancel, onConfirm, onClose }: WithdrawModalProps) => (
+type WithdrawModalProps = {
+  phase: 'confirm' | 'done'
+  reason: string
+  onReasonChange: (v: string) => void
+  onCancel: () => void
+  onConfirm: () => void
+  onClose: () => void
+}
+const WithdrawModal = ({ phase, reason, onReasonChange, onCancel, onConfirm, onClose }: WithdrawModalProps) => (
   <div className="mp-modal-overlay">
     <div className="mp-modal">
       {phase === 'confirm' ? (
         <>
           <p className="mp-modal-msg">정말 회원탈퇴를<br />하시겠습니까?</p>
+          <textarea
+            className="mp-modal-reason"
+            placeholder="탈퇴 사유를 입력해 주세요 (선택)"
+            value={reason}
+            onChange={e => onReasonChange(e.target.value)}
+            maxLength={500}
+            rows={3}
+          />
           <div className="mp-modal-btns">
             <button type="button" className="mp-modal-btn mp-modal-btn--cancel" onClick={onCancel}>취소</button>
             <button type="button" className="mp-modal-btn mp-modal-btn--ok" onClick={onConfirm}>확인</button>
@@ -118,12 +134,18 @@ const WithdrawModal = ({ phase, onCancel, onConfirm, onClose }: WithdrawModalPro
 )
 
 export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPasswordChange, onLogout, onEditNutrition, onWithdraw }: MyPageProps) => {
-  const myPageQuery = useMyPageQuery()
-  const name = myPageQuery.data?.member.name ?? '영양대학'
+  const myPageQuery = useMyPageQuery(isAuthenticated)
+  const name = myPageQuery.data?.nickname ?? myPageQuery.data?.name ?? '영양대학'
   const [logoutPhase, setLogoutPhase] = useState<null | 'confirm' | 'done'>(null)
   const [withdrawPhase, setWithdrawPhase] = useState<null | 'confirm' | 'done'>(null)
+  const [withdrawReason, setWithdrawReason] = useState('')
 
-  const handleLogoutConfirm = () => {
+  const handleLogoutConfirm = async () => {
+    try {
+      await apiLogout()
+    } catch {
+      // 서버 오류여도 로컬 토큰은 이미 삭제됨
+    }
     setLogoutPhase('done')
   }
   const handleLogoutClose = () => {
@@ -131,11 +153,17 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
     onLogout()
   }
 
-  const handleWithdrawConfirm = () => {
+  const handleWithdrawConfirm = async () => {
+    try {
+      await apiWithdraw(withdrawReason.trim() || undefined)
+    } catch {
+      // 서버 오류여도 로컬 상태는 초기화
+    }
     setWithdrawPhase('done')
   }
   const handleWithdrawClose = () => {
     setWithdrawPhase(null)
+    setWithdrawReason('')
     onWithdraw()
   }
 
@@ -152,6 +180,8 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
       {withdrawPhase && (
         <WithdrawModal
           phase={withdrawPhase}
+          reason={withdrawReason}
+          onReasonChange={setWithdrawReason}
           onCancel={() => setWithdrawPhase(null)}
           onConfirm={handleWithdrawConfirm}
           onClose={handleWithdrawClose}

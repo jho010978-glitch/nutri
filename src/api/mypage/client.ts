@@ -1,5 +1,6 @@
-﻿import { mockMyPageProvider } from './mockMyPageProvider'
-import type { MyPageDataProvider } from './provider'
+import { apiFetch } from '../client'
+import type { MyMemberProfile } from '../../types/mypage'
 
-// Swap this binding to an Orval-backed provider when API is ready.
-export const myPageDataProvider: MyPageDataProvider = mockMyPageProvider
+export async function getMe(): Promise<MyMemberProfile> {
+  return apiFetch<MyMemberProfile>('/users/me')
+}

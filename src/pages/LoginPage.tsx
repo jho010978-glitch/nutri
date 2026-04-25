@@ -1,3 +1,31 @@
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined
+const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID as string | undefined
+
+const OAUTH_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:8080'
+  : 'https://nutriuniv.co.kr'
+
+function buildOAuthUrl(provider: string): string {
+  if (provider === 'GOOGLE' && GOOGLE_CLIENT_ID) {
+    const params = new URLSearchParams({
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: `${OAUTH_BASE}/auth/oauth/google`,
+      response_type: 'code',
+      scope: 'email profile',
+    })
+    return `https://accounts.google.com/o/oauth2/v2/auth?${params}`
+  }
+  if (provider === 'KAKAO' && KAKAO_CLIENT_ID) {
+    const params = new URLSearchParams({
+      client_id: KAKAO_CLIENT_ID,
+      redirect_uri: `${OAUTH_BASE}/auth/oauth/kakao`,
+      response_type: 'code',
+    })
+    return `https://kauth.kakao.com/oauth/authorize?${params}`
+  }
+  return `#login`
+}
+
 type LoginPageProps = {
   onLogin: (isAdmin: boolean) => void
 }
@@ -29,7 +57,7 @@ const AppleIcon = () => (
   </svg>
 )
 
-export const LoginPage = ({ onLogin }: LoginPageProps) => (
+export const LoginPage = ({ onLogin: _onLogin }: LoginPageProps) => (
   <section className="login-page">
     <div className="login-top">
       <h1 className="login-title">
@@ -40,27 +68,23 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => (
 
     <div className="login-social">
       <div className="social-btn-list">
-        <button type="button" className="social-btn social-btn--kakao" onClick={() => onLogin(false)}>
+        <button type="button" className="social-btn social-btn--kakao" onClick={() => { window.location.href = buildOAuthUrl('KAKAO') }}>
           <KakaoIcon />
           <span>카카오로 로그인</span>
         </button>
-        <button type="button" className="social-btn social-btn--naver" onClick={() => onLogin(false)}>
+        <button type="button" className="social-btn social-btn--naver" onClick={() => { window.location.href = buildOAuthUrl('NAVER') }}>
           <NaverIcon />
           <span>네이버로 로그인</span>
         </button>
-        <button type="button" className="social-btn social-btn--google" onClick={() => onLogin(false)}>
+        <button type="button" className="social-btn social-btn--google" onClick={() => { window.location.href = buildOAuthUrl('GOOGLE') }}>
           <GoogleIcon />
           <span>구글로 로그인</span>
         </button>
-        <button type="button" className="social-btn social-btn--apple" onClick={() => onLogin(false)}>
+        <button type="button" className="social-btn social-btn--apple" onClick={() => { window.location.href = buildOAuthUrl('APPLE') }}>
           <AppleIcon />
           <span>Apple로 로그인</span>
         </button>
       </div>
-      <label className="login-keep">
-        <input type="checkbox" className="login-keep-check" />
-        <span>로그인 상태 유지</span>
-      </label>
     </div>
   </section>
 )
