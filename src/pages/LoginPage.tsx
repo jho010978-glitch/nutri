@@ -3,7 +3,7 @@ const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID as string | undefin
 
 const OAUTH_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:8080'
-  : 'https://nutriuniv.co.kr'
+  : 'https://api.nutriuniv.co.kr'
 
 function buildOAuthUrl(provider: string): string {
   if (provider === 'GOOGLE' && GOOGLE_CLIENT_ID) {

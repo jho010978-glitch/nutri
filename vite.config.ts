@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://52.78.69.113:8080',
+        target: 'https://api.nutriuniv.co.kr',
         changeOrigin: true,
       },
     },
