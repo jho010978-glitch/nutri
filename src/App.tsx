@@ -51,7 +51,7 @@ const setHashRoute = (route: RouteKey) => { window.location.hash = route }
 
 function AppShell() {
   const [route, setRoute] = useState<RouteKey>(() => getRouteFromHash())
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => !!localStorage.getItem('accessToken'))
   const [isAdmin, setIsAdmin] = useState(false)
   const [showProfileSetup, setShowProfileSetup] = useState(false)
   const [showNutritionEdit, setShowNutritionEdit] = useState(false)
@@ -234,11 +234,11 @@ function AppShell() {
                     // 신규 OAuth 회원: register → nutrition 순서로 호출
                     await register({
                       provider: oauthPending.provider,
-                      oauth_id: oauthPending.oauthId,
+                      oauthId: oauthPending.oauthId,
                       name: profile.name,
                       email: profile.email,
                       gender: profile.gender,
-                      birth_date: profile.birth_date,
+                      birthDate: profile.birth_date,
                     })
                     setOauthPending(null)
                     setIsAuthenticated(true)

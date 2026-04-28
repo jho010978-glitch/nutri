@@ -21,11 +21,11 @@ export async function oauthLogin(provider: string, code: string): Promise<OAuthR
 
 export type RegisterPayload = {
   provider: string
-  oauth_id: string
+  oauthId: string
   name: string
   email: string
   gender: string
-  birth_date: string
+  birthDate: string
 }
 
 export async function register(payload: RegisterPayload): Promise<OAuthResponse> {
