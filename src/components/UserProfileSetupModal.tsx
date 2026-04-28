@@ -119,7 +119,7 @@ export const UserProfileSetupModal = ({ onClose, onComplete, initialProfile, sub
 
         {step === 3 && (
           <>
-            <OptionGroup label="활동 유형" options={['SEDENTARY', 'LIGHTLY_ACTIVE', 'MODERATELY_ACTIVE', 'VERY_ACTIVE']} value={profile.activity_type} onChange={set('activity_type')} />
+            <OptionGroup label="활동 유형" options={['SITTING', 'STANDING', 'PHYSICAL']} value={profile.activity_type} onChange={set('activity_type')} />
             <OptionGroup label="주간 운동 횟수" options={['1', '2', '3', '4', '5', '6', '7']} value={profile.weekly_exercise_count} onChange={set('weekly_exercise_count')} />
             <OptionGroup label="운동 강도" options={['LOW', 'MEDIUM', 'HIGH']} value={profile.exercise_intensity} onChange={set('exercise_intensity')} />
           </>
