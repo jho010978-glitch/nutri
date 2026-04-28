@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useMyPageQuery } from '../queries/myPageQueries'
-import { logout as apiLogout, withdraw as apiWithdraw } from '../api/auth'
+import { useQueryClient } from '@tanstack/react-query'
+import { useMyPageQuery, myPageKeys } from '../queries/myPageQueries'
+import { logout as apiLogout, withdraw as apiWithdraw, updateMe } from '../api/auth'
 import './MyPage.css'
 
 type MyPageProps = {
@@ -136,9 +137,19 @@ const WithdrawModal = ({ phase, reason, onReasonChange, onCancel, onConfirm, onC
 export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPasswordChange, onLogout, onEditNutrition, onWithdraw }: MyPageProps) => {
   const myPageQuery = useMyPageQuery(isAuthenticated)
   const name = myPageQuery.data?.nickname ?? myPageQuery.data?.name ?? '영양대학'
+  const queryClient = useQueryClient()
   const [logoutPhase, setLogoutPhase] = useState<null | 'confirm' | 'done'>(null)
   const [withdrawPhase, setWithdrawPhase] = useState<null | 'confirm' | 'done'>(null)
   const [withdrawReason, setWithdrawReason] = useState('')
+  const [nickEdit, setNickEdit] = useState(false)
+  const [nickVal, setNickVal] = useState('')
+
+  const handleNickSave = async () => {
+    if (!nickVal.trim()) return
+    await updateMe({ nickname: nickVal.trim() })
+    await queryClient.invalidateQueries({ queryKey: myPageKeys.me })
+    setNickEdit(false)
+  }
 
   const handleLogoutConfirm = async () => {
     try {
@@ -214,10 +225,26 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
           <div className="mypage-profile">
             <div className="mypage-avatar" aria-hidden="true" />
             <div className="mypage-name-row">
-              <strong className="mypage-name">{name}</strong>
-              <button type="button" className="mypage-name-edit" aria-label="이름 변경">
-                <PencilIcon />
-              </button>
+              {nickEdit ? (
+                <>
+                  <input
+                    className="mypage-nick-input"
+                    value={nickVal}
+                    onChange={e => setNickVal(e.target.value)}
+                    autoFocus
+                    onKeyDown={e => { if (e.key === 'Enter') handleNickSave(); if (e.key === 'Escape') setNickEdit(false) }}
+                  />
+                  <button type="button" className="mypage-nick-save" onClick={handleNickSave}>저장</button>
+                  <button type="button" className="mypage-nick-cancel" onClick={() => setNickEdit(false)}>취소</button>
+                </>
+              ) : (
+                <>
+                  <strong className="mypage-name">{name}</strong>
+                  <button type="button" className="mypage-name-edit" aria-label="닉네임 변경" onClick={() => { setNickVal(name); setNickEdit(true) }}>
+                    <PencilIcon />
+                  </button>
+                </>
+              )}
             </div>
           </div>
 

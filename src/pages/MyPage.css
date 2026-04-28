@@ -97,6 +97,33 @@
   fill: currentColor;
 }
 
+.mypage-nick-input {
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-bottom: 1.5px solid #5ba47c;
+  outline: none;
+  width: 120px;
+  padding: 2px 4px;
+  background: transparent;
+}
+.mypage-nick-save,
+.mypage-nick-cancel {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+.mypage-nick-save {
+  background: #5ba47c;
+  color: #fff;
+}
+.mypage-nick-cancel {
+  background: #eee;
+  color: #555;
+}
+
 /* ── 카드 ───────────────────────────────────────── */
 .mypage-card {
   background: #fff;
