@@ -35,7 +35,7 @@ export const PasswordChangePage = ({ onBack }: Props) => {
       if (nickname) payload.nickname = nickname
       if (email) payload.email = email
       if (gender) payload.gender = gender
-      if (birthDate) payload.birth_date = birthDate
+      if (birthDate) payload.birthDate = birthDate
       await updateMe(payload)
       await queryClient.invalidateQueries({ queryKey: myPageKeys.me })
       setDone(true)

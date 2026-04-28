@@ -50,7 +50,7 @@ export type UpdateUserPayload = {
   email?: string
   nickname?: string
   gender?: string
-  birth_date?: string
+  birthDate?: string
 }
 
 export async function updateMe(payload: UpdateUserPayload): Promise<UpdateUserPayload> {

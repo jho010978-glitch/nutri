@@ -7,6 +7,6 @@ export const mockMyPageData: MyPageData = {
     name: '홍길동',
     nickname: '길동',
     gender: 'MALE',
-    birth_date: '2000-03-12',
+    birthDate: '2000-03-12',
   },
 }

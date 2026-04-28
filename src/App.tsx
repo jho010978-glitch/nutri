@@ -22,14 +22,14 @@ function profileToNutrition(p: Profile): NutritionData {
   return {
     height: Number(p.height),
     weight: Number(p.weight),
-    body_fat_rate: p.body_fat_rate ? Number(p.body_fat_rate) : undefined,
-    skeletal_muscle_mass: p.skeletal_muscle_mass ? Number(p.skeletal_muscle_mass) : undefined,
-    diet_purpose: p.diet_purpose,
-    activity_type: p.activity_type,
-    weekly_exercise_count: Number(p.weekly_exercise_count) || 0,
-    exercise_intensity: p.exercise_intensity,
-    daily_meal_count: p.daily_meal_count,
-    daily_snack_count: p.daily_snack_count,
+    bodyFatRate: p.body_fat_rate ? Number(p.body_fat_rate) : undefined,
+    skeletalMuscleMass: p.skeletal_muscle_mass ? Number(p.skeletal_muscle_mass) : undefined,
+    dietPurpose: p.diet_purpose,
+    activityType: p.activity_type,
+    weeklyExerciseCount: Number(p.weekly_exercise_count) || 0,
+    exerciseIntensity: p.exercise_intensity,
+    dailyMealCount: p.daily_meal_count,
+    dailySnackCount: p.daily_snack_count,
   }
 }
 

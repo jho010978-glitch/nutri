@@ -2,10 +2,10 @@ import { apiFetch } from './client'
 import type { BrandRef } from './products/types'
 
 export type LikeItem = {
-  product_id: number
+  productId: number
   name: string
-  image_url: string
-  nutrition_score: number
+  imageUrl: string
+  nutritionScore: number
   brand: BrandRef
 }
 

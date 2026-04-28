@@ -3,14 +3,14 @@ import { apiFetch } from './client'
 export type NutritionData = {
   height: number
   weight: number
-  body_fat_rate?: number
-  skeletal_muscle_mass?: number
-  diet_purpose: string
-  activity_type: string
-  weekly_exercise_count: number
-  exercise_intensity: string
-  daily_meal_count: number
-  daily_snack_count: number
+  bodyFatRate?: number
+  skeletalMuscleMass?: number
+  dietPurpose: string
+  activityType: string
+  weeklyExerciseCount: number
+  exerciseIntensity: string
+  dailyMealCount: number
+  dailySnackCount: number
 }
 
 export async function getNutrition(): Promise<NutritionData> {

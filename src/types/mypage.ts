@@ -4,7 +4,7 @@ export type MyMemberProfile = {
   name: string
   nickname: string
   gender: 'MALE' | 'FEMALE' | string
-  birth_date: string
+  birthDate: string
 }
 
 export type MyPageData = {

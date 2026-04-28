@@ -44,22 +44,22 @@ export const FavoritesPage = ({ onBack, onProductClick }: FavoritesPageProps) =>
         <section className="fav-grid" aria-label="즐겨찾기 상품">
           {items.map(item => {
             const product: Product = {
-              id: item.product_id,
+              id: item.productId,
               name: item.name,
               brand: item.brand,
-              image: item.image_url,
-              nutritionScore: item.nutrition_score,
+              image: item.imageUrl,
+              nutritionScore: item.nutritionScore,
               category: { id: 0, name: '' },
               favorited: true,
             }
             return (
-              <article key={item.product_id} className="home-card" onClick={() => onProductClick?.(product)}>
+              <article key={item.productId} className="home-card" onClick={() => onProductClick?.(product)}>
                 <div className="home-card-img-wrap">
-                  {item.image_url
-                    ? <img className="home-card-img" src={item.image_url} alt={item.name} loading="lazy" />
+                  {item.imageUrl
+                    ? <img className="home-card-img" src={item.imageUrl} alt={item.name} loading="lazy" />
                     : <div className="home-card-img home-card-img--placeholder" />
                   }
-                  <span className="home-card-grade">{item.nutrition_score}</span>
+                  <span className="home-card-grade">{item.nutritionScore}</span>
                 </div>
                 <div className="home-card-bottom">
                   <div className="home-card-text">
@@ -70,7 +70,7 @@ export const FavoritesPage = ({ onBack, onProductClick }: FavoritesPageProps) =>
                     type="button"
                     className="home-card-heart on"
                     aria-label="즐겨찾기 해제"
-                    onClick={e => { e.stopPropagation(); toggle(item.product_id) }}
+                    onClick={e => { e.stopPropagation(); toggle(item.productId) }}
                   >♥</button>
                 </div>
               </article>

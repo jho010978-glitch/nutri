@@ -17,7 +17,7 @@ export const useLikesQuery = (enabled = true, page = 1, size = 20) => {
 
   useEffect(() => {
     if (query.data) {
-      setFavoriteIds(query.data.items.map(i => i.product_id))
+      setFavoriteIds(query.data.items.map(i => i.productId))
     }
   }, [query.data, setFavoriteIds])
 
