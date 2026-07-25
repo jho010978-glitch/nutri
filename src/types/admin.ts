@@ -1,63 +1,53 @@
-export type AdminSummary = {
-  totalProducts: number
-  totalCategories: number
-  averageScore: number
-  lastUpdatedAt: string
-}
-
-export type IntegrationStatus = {
-  total: number
-  withImage: number
-  linkedToCoupang: number
-  missingCount: number
-}
-
-export type ApiLimitStatus = {
-  key: string
-  label: string
-  used: number
-  limit: number
-  resetInSeconds: number
-}
-
+// 관리자 로깅·분석 대시보드 — swagger(/v3/api-docs) 실제 응답 스키마 기준
 export type AdminDashboard = {
-  summary: AdminSummary
-  integration: IntegrationStatus
-  apiLimits: ApiLimitStatus[]
+  totalProducts: number
+  totalCategories: { depth1: number; depth2: number; depth3: number }
+  avgNutritionScore: number
+  lastUpdatedAt: string
+  coupangLinkStatus: { total: number; linked: number; unlinked: number; failed: number }
 }
 
-export type RankedItem = {
-  id: string
-  label: string
-  count: number
+export type DailyViewStat = {
+  date: string
+  viewCount: number
+  uniqueProductCount: number
 }
 
-export type AdminClickStats = {
-  updatedAt: string
-  totalClicks: number
-  coupangClicks: number
-  otherClicks: number
-  topItems: RankedItem[]
+export type DailySearchStat = {
+  date: string
+  searchCount: number
+  uniqueKeywordCount: number
 }
 
-export type AdminSearchStats = {
-  totalSearches: number
-  topKeywords: RankedItem[]
+export type DailyCoupangStat = {
+  date: string
+  click: number
+  orderCount: number
+  cancelCount: number
+  gmv: number
+  commission: number
 }
 
-export type AdminProduct = {
-  id: string
-  imageUrl: string
-  name: string
-  category: string
-  score: number
-  priceWon: number
-  hasCoupang: boolean
-  manufacturer: string
+export type RetentionVerdict = 'PASS' | 'FAIL' | 'S4'
+
+export type RetentionCohort = {
+  cohort: string
+  w1Users: number
+  retainedUsers: number
+  retentionRate: number
+  verdict: RetentionVerdict
 }
 
-export type AdminProductListResponse = {
-  items: AdminProduct[]
-  total: number
+export type KeywordChange = 'UP' | 'DOWN' | 'SAME' | 'NEW'
+
+export type PopularKeyword = {
+  rank: number
+  keyword: string
+  previousRank: number | null
+  change: KeywordChange
+  rankDelta: number
 }
 
+// 기간 필터 — start/end는 yyyyMMdd (명세 6장 공통 정책)
+export type DateRange = { start: string; end: string }
+export type PeriodPreset = 'today' | '7d' | '30d' | 'custom'

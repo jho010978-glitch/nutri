@@ -1,19 +1,18 @@
 import type {
-  AdminClickStats,
   AdminDashboard,
-  AdminProductListResponse,
-  AdminSearchStats,
+  DailyCoupangStat,
+  DailySearchStat,
+  DailyViewStat,
+  DateRange,
+  PopularKeyword,
+  RetentionCohort,
 } from '../../types/admin'
-
-export type GetProductsParams = {
-  query?: string
-  limit?: number
-}
 
 export interface AdminDataProvider {
   getDashboard: () => Promise<AdminDashboard>
-  getClickStats: () => Promise<AdminClickStats>
-  getSearchStats: () => Promise<AdminSearchStats>
-  getProducts: (params?: GetProductsParams) => Promise<AdminProductListResponse>
+  getViewStats: (range: DateRange) => Promise<DailyViewStat[]>
+  getSearchStats: (range: DateRange) => Promise<DailySearchStat[]>
+  getCoupangStats: (range: DateRange) => Promise<DailyCoupangStat[]>
+  getRetention: () => Promise<RetentionCohort[]>
+  getPopularKeywords: () => Promise<PopularKeyword[]>
 }
-

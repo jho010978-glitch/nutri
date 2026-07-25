@@ -18,7 +18,9 @@ export function useAuthSession({ go, setFavoriteIds }: Options) {
   // 앱 시작 시 토큰 유효성 검증 — 만료 시 auth:logout 이벤트로 자동 로그아웃
   const myPageQuery = useMyPageQuery(isAuthenticated)
   const myNickname = myPageQuery.data?.nickname
-  const isAdmin = isAuthenticated && myPageQuery.data?.role === 'ADMIN'
+  // useAuthSession.ts — 개발 빌드에서만 관리자로 간주
+  const isAdmin = import.meta.env.DEV || (isAuthenticated && myPageQuery.data?.role === 'ADMIN')
+  // const isAdmin = isAuthenticated && myPageQuery.data?.role === 'ADMIN'
 
   // 저장된 토큰의 유효성을 /users/me 응답으로 확인 — 완료 전까지 UI 차단
   useEffect(() => {
