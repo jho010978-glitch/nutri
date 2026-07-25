@@ -1,4 +1,4 @@
-import { AdminPage } from '../../pages/AdminPage'
+import { AdminDashboardPage } from '../../pages/admin/AdminDashboardPage'
 import { LoginPage } from '../../pages/LoginPage'
 
 type AdminRouteProps = {
@@ -11,5 +11,5 @@ type AdminRouteProps = {
 // 비관리자(비로그인 포함)는 로그인 화면 표시(리다이렉트 없음).
 export function AdminRoute({ isAdmin, sessionChecking, onLogin }: AdminRouteProps) {
   if (sessionChecking) return null
-  return isAdmin ? <AdminPage /> : <LoginPage onLogin={onLogin} />
+  return isAdmin ? <AdminDashboardPage /> : <LoginPage onLogin={onLogin} />
 }

@@ -1,0 +1,190 @@
+.admin-dash {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f3f4f6;
+  margin: -14px;
+  padding: 14px 16px 28px;
+}
+
+.admin-dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ── 기간 필터 ─────────────────────────────────── */
+.admin-period {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-period-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.admin-period-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-period-chip {
+  flex: none;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-period-chip[aria-pressed='true'] {
+  border-color: #131313;
+  background: #131313;
+  color: #fff;
+}
+
+.admin-period-custom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-period-date {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
+  padding: 0 8px;
+  background: #fff;
+  font-size: 13px;
+  color: #1c1c1c;
+}
+
+.admin-period-date:focus-visible {
+  outline: 2px solid #97b6ff;
+  outline-offset: 1px;
+}
+
+.admin-period-date:invalid {
+  border-color: #f2c0be;
+  background: #fff8f7;
+}
+
+/* ── 새로고침 컨트롤 ───────────────────────────── */
+.admin-refresh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-refresh-btn {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-refresh-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-refresh-toggle input {
+  accent-color: #131313;
+}
+
+.admin-refresh-ago {
+  margin-left: auto;
+  font-size: 11px;
+  color: #8a8a8e;
+}
+
+/* ── 위젯 카드 공통 ────────────────────────────── */
+.admin-widget {
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-widget-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-widget-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 0;
+}
+
+.admin-widget-retry {
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-skeleton-bar {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+  background-size: 200% 100%;
+  animation: admin-skeleton-wave 1.4s ease infinite;
+}
+
+@keyframes admin-skeleton-wave {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* 이후 단계에서 채울 자리 표시 */
+.admin-widget-placeholder {
+  border: 1px dashed #d4d4d4;
+  border-radius: 8px;
+  padding: 22px 0;
+  text-align: center;
+}
