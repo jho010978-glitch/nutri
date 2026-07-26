@@ -181,6 +181,27 @@
   }
 }
 
+/* ── KPI 카드 ─────────────────────────────────── */
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.admin-kpi-card {
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.admin-kpi-card p {
+  margin: 0;
+}
+
 /* 이후 단계에서 채울 자리 표시 */
 .admin-widget-placeholder {
   border: 1px dashed #d4d4d4;

@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Typography } from '../../components/Typography'
 import { presetToRange } from '../../lib/dateRange'
 import { adminKeys } from '../../queries/adminQueries'
+import { KpiCards } from './components/KpiCards'
 import { PeriodFilterChips, type PeriodFilterValue } from './components/PeriodFilterChips'
 import { RefreshControl } from './components/RefreshControl'
 import { DashboardCard } from './components/DashboardCard'
@@ -22,9 +23,22 @@ export const AdminDashboardPage = () => {
   const [autoRefresh, setAutoRefresh] = useState(false)
   const [refreshedAt, setRefreshedAt] = useState(() => Date.now())
 
+  // 업데이트 시각은 admin 쿼리 fetch 성공 시점 — 수동 새로고침·60초 폴링·기간 변경 모두 잡힌다
+  useEffect(
+    () =>
+      queryClient.getQueryCache().subscribe((event) => {
+        if (
+          event.type === 'updated' &&
+          event.action.type === 'success' &&
+          event.query.queryKey[0] === adminKeys.all[0]
+        )
+          setRefreshedAt(Date.now())
+      }),
+    [queryClient],
+  )
+
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: adminKeys.all })
-    setRefreshedAt(Date.now())
   }
 
   return (
@@ -43,10 +57,9 @@ export const AdminDashboardPage = () => {
         refreshedAt={refreshedAt}
       />
 
-      {/* 아래 위젯은 18~20단계에서 구현 — period.range·autoRefresh를 쿼리 훅에 연결한다 */}
-      <DashboardCard title="핵심 지표">
-        <Placeholder note="KPI 카드 6종 (18단계)" />
-      </DashboardCard>
+      <KpiCards range={period.range} autoRefresh={autoRefresh} />
+
+      {/* 아래 위젯은 19~20단계에서 구현 — period.range·autoRefresh를 쿼리 훅에 연결한다 */}
       <DashboardCard title="상품 조회수 추세">
         <Placeholder note="조회수 차트 (19단계)" />
       </DashboardCard>
