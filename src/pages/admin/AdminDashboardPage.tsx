@@ -3,9 +3,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Typography } from '../../components/Typography'
 import { presetToRange } from '../../lib/dateRange'
 import { adminKeys } from '../../queries/adminQueries'
+import { CoupangChartWidget } from './components/CoupangChartWidget'
 import { KpiCards } from './components/KpiCards'
 import { PeriodFilterChips, type PeriodFilterValue } from './components/PeriodFilterChips'
 import { RefreshControl } from './components/RefreshControl'
+import { SearchTrendWidget } from './components/SearchTrendWidget'
+import { ViewsTrendWidget } from './components/ViewsTrendWidget'
 import { DashboardCard } from './components/DashboardCard'
 import './AdminDashboardPage.css'
 
@@ -59,16 +62,11 @@ export const AdminDashboardPage = () => {
 
       <KpiCards range={period.range} autoRefresh={autoRefresh} />
 
-      {/* 아래 위젯은 19~20단계에서 구현 — period.range·autoRefresh를 쿼리 훅에 연결한다 */}
-      <DashboardCard title="상품 조회수 추세">
-        <Placeholder note="조회수 차트 (19단계)" />
-      </DashboardCard>
-      <DashboardCard title="검색량 추세">
-        <Placeholder note="검색량 차트 (19단계)" />
-      </DashboardCard>
-      <DashboardCard title="쿠팡 파트너스 성과">
-        <Placeholder note="쿠팡 차트 (19단계)" />
-      </DashboardCard>
+      <ViewsTrendWidget range={period.range} autoRefresh={autoRefresh} />
+      <SearchTrendWidget range={period.range} autoRefresh={autoRefresh} />
+      <CoupangChartWidget range={period.range} autoRefresh={autoRefresh} />
+
+      {/* 아래 위젯은 20단계에서 구현 — period.range·autoRefresh를 쿼리 훅에 연결한다 */}
       <DashboardCard title="인기 검색어 TOP 10">
         <Placeholder note="검색어 순위 (20단계)" />
       </DashboardCard>

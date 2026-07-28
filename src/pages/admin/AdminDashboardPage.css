@@ -202,6 +202,32 @@
   margin: 0;
 }
 
+/* ── 차트 ─────────────────────────────────────── */
+.admin-chart-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 10px;
+}
+
+.admin-chart-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.admin-chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
 /* 이후 단계에서 채울 자리 표시 */
 .admin-widget-placeholder {
   border: 1px dashed #d4d4d4;
