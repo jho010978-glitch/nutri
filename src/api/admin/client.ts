@@ -1,6 +1,5 @@
-import { mockAdminProvider } from './mockAdminProvider'
+import { httpAdminProvider } from './httpAdminProvider'
 import type { AdminDataProvider } from './provider'
 
-// Swap this binding to an Orval-backed provider when API is ready.
-export const adminDataProvider: AdminDataProvider = mockAdminProvider
-
+// 관리자 계정(role=ADMIN) 준비 전까지 mock 사용 — 준비되면 httpAdminProvider로 교체
+export const adminDataProvider: AdminDataProvider = httpAdminProvider

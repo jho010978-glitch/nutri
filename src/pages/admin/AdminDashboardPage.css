@@ -1,0 +1,369 @@
+.admin-dash {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f3f4f6;
+  margin: -14px;
+  padding: 14px 16px 28px;
+  container-type: inline-size;
+}
+
+.admin-dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ── 기간 필터 ─────────────────────────────────── */
+.admin-period {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-period-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.admin-period-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-period-chip {
+  flex: none;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-period-chip[aria-pressed='true'] {
+  border-color: #131313;
+  background: #131313;
+  color: #fff;
+}
+
+.admin-period-custom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-period-date {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
+  padding: 0 8px;
+  background: #fff;
+  font-size: 13px;
+  color: #1c1c1c;
+}
+
+.admin-period-date:focus-visible {
+  outline: 2px solid #97b6ff;
+  outline-offset: 1px;
+}
+
+.admin-period-date:invalid {
+  border-color: #f2c0be;
+  background: #fff8f7;
+}
+
+/* ── 새로고침 컨트롤 ───────────────────────────── */
+.admin-refresh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-refresh-btn {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-refresh-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-refresh-toggle input {
+  accent-color: #131313;
+}
+
+.admin-refresh-ago {
+  margin-left: auto;
+  font-size: 11px;
+  color: #8a8a8e;
+}
+
+/* ── 위젯 카드 공통 ────────────────────────────── */
+.admin-widget {
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-widget-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-widget-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 0;
+}
+
+.admin-widget-retry {
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-skeleton-bar {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+  background-size: 200% 100%;
+  animation: admin-skeleton-wave 1.4s ease infinite;
+}
+
+@keyframes admin-skeleton-wave {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ── KPI 카드 ─────────────────────────────────── */
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.admin-kpi-card {
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.admin-kpi-card p {
+  margin: 0;
+}
+
+/* ── 차트 ─────────────────────────────────────── */
+.admin-chart-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 10px;
+}
+
+.admin-chart-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.admin-chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+/* ── 인기 검색어 ──────────────────────────────── */
+.admin-keyword-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-keyword-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.admin-keyword-row:last-child {
+  border-bottom: 0;
+}
+
+.admin-keyword-rank {
+  text-align: center;
+}
+
+.admin-keyword-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 재방문 코호트 ────────────────────────────── */
+.admin-cohort-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-cohort-card {
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-cohort-card p {
+  margin: 0;
+}
+
+.admin-cohort-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-cohort-head h3 {
+  margin: 0;
+}
+
+.admin-cohort-badge {
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-cohort-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #ececec;
+  overflow: hidden;
+}
+
+.admin-cohort-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+/* ── 넓은 컨테이너 확장 ───────────────────────── */
+/* 화면이 아니라 대시보드 실제 폭 기준 — 앱 셸이 모바일 고정 폭이라
+   뷰포트 기준으로 잡으면 좁은 컨테이너에 3열이 들어가 카드가 뭉개진다.
+   좁힘 규칙보다 뒤에 와야 캐스케이드에서 이긴다 */
+@container (min-width: 600px) {
+  .admin-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-cohort-list {
+    flex-direction: row;
+  }
+
+  .admin-cohort-card {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* recharts 3이 svg에 tabindex="0"을, 내부 g 레이어에 tabindex="-1"을 붙여
+   클릭만 해도 포커스 링이 뜬다(막대처럼 클릭 대상이 있으면 g가 잡힌다).
+   키보드 탐색용 링은 남기고 마우스 클릭에서만 숨긴다 */
+.admin-widget [tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── 1일 구간 숫자 요약 (차트 대체) ─────────────── */
+.admin-single-day {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.admin-single-day-item {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.admin-single-day-item dt {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.admin-single-day-item dd {
+  margin: 0;
+}
