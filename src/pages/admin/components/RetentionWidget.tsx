@@ -1,9 +1,9 @@
 import { Typography } from '../../../components/Typography'
 import { useRetentionQuery } from '../../../queries/adminQueries'
 import type { RetentionVerdict } from '../../../types/admin'
+import { numberFormatter } from '../chartConfig'
 import { DashboardCard } from './DashboardCard'
 
-const numberFormatter = new Intl.NumberFormat('ko-KR')
 
 // verdict는 서버가 판정해 내려준다(명세 4.3 기준: ≥0.20 PASS / <0.07 FAIL / 그 사이 S4).
 // 프론트는 재계산하지 않으므로 서버가 기준을 바꿔도 이 화면은 그대로 따라간다.

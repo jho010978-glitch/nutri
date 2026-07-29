@@ -1,4 +1,9 @@
-const numberFormatter = new Intl.NumberFormat('ko-KR')
+export const numberFormatter = new Intl.NumberFormat('ko-KR')
+export const wonFormatter = new Intl.NumberFormat('ko-KR', {
+  style: 'currency',
+  currency: 'KRW',
+  maximumFractionDigits: 0,
+})
 
 export const CHART_HEIGHT = 220
 export const axisStyle = { fontSize: 11, fill: '#8a8a8e' }
@@ -13,6 +18,8 @@ export type ChartSeries = {
   key: string
   name: string
   color: string
+  // 지정하지 않으면 천 단위 구분 정수로 표시
+  format?: (value: number) => string
 }
 
 // yyyy-MM-dd → M/D (축 라벨은 짧아야 모바일에서 겹치지 않는다)

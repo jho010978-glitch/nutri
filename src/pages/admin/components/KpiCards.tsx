@@ -8,14 +8,8 @@ import {
   useViewStatsQuery,
 } from '../../../queries/adminQueries'
 import type { DateRange } from '../../../types/admin'
+import { numberFormatter, wonFormatter } from '../chartConfig'
 import { DashboardCard } from './DashboardCard'
-
-const numberFormatter = new Intl.NumberFormat('ko-KR')
-const wonFormatter = new Intl.NumberFormat('ko-KR', {
-  style: 'currency',
-  currency: 'KRW',
-  maximumFractionDigits: 0,
-})
 
 const sumBy = <T,>(rows: T[] | undefined, pick: (row: T) => number) =>
   rows === undefined ? undefined : rows.reduce((acc, row) => acc + pick(row), 0)
