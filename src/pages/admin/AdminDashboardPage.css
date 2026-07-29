@@ -228,10 +228,87 @@
   border-radius: 2px;
 }
 
-/* 이후 단계에서 채울 자리 표시 */
-.admin-widget-placeholder {
-  border: 1px dashed #d4d4d4;
-  border-radius: 8px;
-  padding: 22px 0;
+/* ── 인기 검색어 ──────────────────────────────── */
+.admin-keyword-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-keyword-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.admin-keyword-row:last-child {
+  border-bottom: 0;
+}
+
+.admin-keyword-rank {
   text-align: center;
+}
+
+.admin-keyword-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 재방문 코호트 ────────────────────────────── */
+.admin-cohort-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-cohort-card {
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-cohort-card p {
+  margin: 0;
+}
+
+.admin-cohort-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-cohort-head h3 {
+  margin: 0;
+}
+
+.admin-cohort-badge {
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-cohort-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #ececec;
+  overflow: hidden;
+}
+
+.admin-cohort-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
 }

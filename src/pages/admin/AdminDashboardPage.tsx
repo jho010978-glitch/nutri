@@ -6,19 +6,12 @@ import { adminKeys } from '../../queries/adminQueries'
 import { CoupangChartWidget } from './components/CoupangChartWidget'
 import { KpiCards } from './components/KpiCards'
 import { PeriodFilterChips, type PeriodFilterValue } from './components/PeriodFilterChips'
+import { PopularKeywordsWidget } from './components/PopularKeywordsWidget'
 import { RefreshControl } from './components/RefreshControl'
+import { RetentionWidget } from './components/RetentionWidget'
 import { SearchTrendWidget } from './components/SearchTrendWidget'
 import { ViewsTrendWidget } from './components/ViewsTrendWidget'
-import { DashboardCard } from './components/DashboardCard'
 import './AdminDashboardPage.css'
-
-const Placeholder = ({ note }: { note: string }) => (
-  <div className="admin-widget-placeholder">
-    <Typography as="span" variant="label" weight="regular" color="#a0a0a0">
-      {note}
-    </Typography>
-  </div>
-)
 
 export const AdminDashboardPage = () => {
   const queryClient = useQueryClient()
@@ -66,13 +59,8 @@ export const AdminDashboardPage = () => {
       <SearchTrendWidget range={period.range} autoRefresh={autoRefresh} />
       <CoupangChartWidget range={period.range} autoRefresh={autoRefresh} />
 
-      {/* 아래 위젯은 20단계에서 구현 — period.range·autoRefresh를 쿼리 훅에 연결한다 */}
-      <DashboardCard title="인기 검색어 TOP 10">
-        <Placeholder note="검색어 순위 (20단계)" />
-      </DashboardCard>
-      <DashboardCard title="재방문 코호트">
-        <Placeholder note="코호트 카드 (20단계)" />
-      </DashboardCard>
+      <PopularKeywordsWidget autoRefresh={autoRefresh} />
+      <RetentionWidget autoRefresh={autoRefresh} />
     </div>
   )
 }
