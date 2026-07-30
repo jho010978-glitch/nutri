@@ -96,10 +96,12 @@ export function AppRoutes(props: AppRoutesProps) {
         element={
           <MyPage
             isAuthenticated={props.isAuthenticated}
+            isAdmin={props.isAdmin}
             onBack={() => goBack('/')}
             onLogin={() => go('/login')}
             onGoFavorites={() => go('/favorites')}
             onGoPasswordChange={() => go('/password-change')}
+            onGoAdmin={() => go('/admin')}
             onLogout={props.onLogout}
             onEditNutrition={props.onEditNutrition}
             onWithdraw={() => go('/withdraw')}
