@@ -53,34 +53,6 @@
   color: #fff;
 }
 
-.admin-period-custom {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.admin-period-date {
-  flex: 1;
-  min-width: 0;
-  height: 36px;
-  border: 1px solid #d7d7d7;
-  border-radius: 8px;
-  padding: 0 8px;
-  background: #fff;
-  font-size: 13px;
-  color: #1c1c1c;
-}
-
-.admin-period-date:focus-visible {
-  outline: 2px solid #97b6ff;
-  outline-offset: 1px;
-}
-
-.admin-period-date:invalid {
-  border-color: #f2c0be;
-  background: #fff8f7;
-}
-
 /* ── 새로고침 컨트롤 ───────────────────────────── */
 .admin-refresh {
   display: flex;

@@ -50,4 +50,5 @@ export type PopularKeyword = {
 
 // 기간 필터 — start/end는 yyyyMMdd (명세 6장 공통 정책)
 export type DateRange = { start: string; end: string }
-export type PeriodPreset = 'today' | '7d' | '30d' | 'custom'
+// 서버가 조회 기간에 30일 상한을 두어 직접 선택은 제공하지 않는다
+export type PeriodPreset = 'today' | '7d' | '30d'

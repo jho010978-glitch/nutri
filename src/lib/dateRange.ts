@@ -15,7 +15,7 @@ const shiftDays = (d: Date, days: number) => {
 
 // 프리셋 → 로컬(KST) 기준 기간. 7일/30일은 오늘 포함 최근 N일.
 // 시계는 한 번만 읽는다 — 두 번 읽으면 자정을 걸칠 때 기간 길이가 어긋난다
-export const presetToRange = (preset: Exclude<PeriodPreset, 'custom'>): DateRange => {
+export const presetToRange = (preset: PeriodPreset): DateRange => {
   const now = new Date()
   const end = toYyyyMmDd(now)
   switch (preset) {
@@ -49,6 +49,5 @@ export const expandRange = ({ start, end }: DateRange): Date[] => {
   return dates
 }
 
-// <input type="date"> 값(yyyy-MM-dd) ↔ yyyyMMdd 변환
-export const isoToCompact = (iso: string) => iso.replaceAll('-', '')
+// yyyyMMdd → yyyy-MM-dd (표시·응답 date 필드 형식)
 export const compactToIso = (s: string) => `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}`
