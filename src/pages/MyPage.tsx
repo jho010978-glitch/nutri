@@ -6,10 +6,14 @@ import './MyPage.css'
 
 type MyPageProps = {
   isAuthenticated: boolean
+  // 관리자 판정은 useAuthSession 한 곳에서만 한다 — 여기서 role을 다시 보면
+  // 두 정의가 갈려 메뉴와 /admin 라우트가 어긋난다
+  isAdmin: boolean
   onBack: () => void
   onLogin: () => void
   onGoFavorites: () => void
   onGoPasswordChange: () => void
+  onGoAdmin: () => void
   onLogout: () => void
   onEditNutrition: () => void
   onWithdraw: () => void
@@ -94,7 +98,18 @@ const LogoutModal = ({ phase, onCancel, onConfirm, onClose }: LogoutModalProps) 
   </div>
 )
 
-export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPasswordChange, onLogout, onEditNutrition, onWithdraw }: MyPageProps) => {
+export const MyPage = ({
+  isAuthenticated,
+  isAdmin,
+  onBack,
+  onLogin,
+  onGoFavorites,
+  onGoPasswordChange,
+  onGoAdmin,
+  onLogout,
+  onEditNutrition,
+  onWithdraw,
+}: MyPageProps) => {
   const myPageQuery = useMyPageQuery(isAuthenticated)
   const name = myPageQuery.data?.nickname || myPageQuery.data?.name || ''
   const queryClient = useQueryClient()
@@ -183,6 +198,16 @@ export const MyPage = ({ isAuthenticated, onBack, onLogin, onGoFavorites, onGoPa
               )}
             </div>
           </div>
+
+          {isAdmin && (
+            <section className="mypage-card" aria-label="관리자">
+              <h3 className="mypage-card-title">관리자</h3>
+              <button type="button" className="mypage-row mypage-row--btn" onClick={onGoAdmin}>
+                <span className="mypage-row-label">관리자 대시보드</span>
+                <ChevronRightIcon />
+              </button>
+            </section>
+          )}
 
           <section className="mypage-card" aria-label="나의 활동">
             <h3 className="mypage-card-title">나의 활동</h3>
